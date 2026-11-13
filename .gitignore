@@ -1,0 +1,10 @@
+.gradle/
+.kotlin/
+**/build/
+local.properties
+*.jks
+*.keystore
+*.idsig
+dist/
+
+.test-home/
