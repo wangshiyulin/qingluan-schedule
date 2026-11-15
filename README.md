@@ -1,80 +1,85 @@
-# 青鸾课程表
+<h1 align="center">青鸾课程表</h1>
 
-一款简洁、轻量的 Android 本地课程表。无需注册应用账号，课表保存在设备上，支持教务导入、多课表管理和液态玻璃导航栏。
+<p align="center">
+  <img src="https://schedule.qingluanx.com/assets/brand.svg" width="200" height="200" alt="青鸾课程表图标" />
+</p>
 
-**Android 15+ · Kotlin / Jetpack Compose · v1.0.1（内部版本 101）**
+<p align="center">查看今日课程，安排每一周。</p>
 
-[下载安装](https://github.com/wangshiyulin/qingluan-schedule/releases/latest) · [官网](https://schedule.qingluanx.com) · [问题反馈](https://github.com/wangshiyulin/qingluan-schedule/issues) · [博客](https://qingluanx.com)
+<p align="center"><strong>本地存储 · 无需注册 · 轻量易用</strong></p>
 
-## 功能
+<p align="center">
+  <a href="https://github.com/wangshiyulin/qingluan-schedule/releases/latest"><img src="https://img.shields.io/github/v/release/wangshiyulin/qingluan-schedule?label=Release&amp;color=379D98" alt="最新版本" /></a>
+  <img src="https://img.shields.io/badge/Android-15%2B-3DDC84?logo=android&amp;logoColor=white" alt="Android 15 及以上" />
+</p>
 
-- **今日与周课表**：滑动切周、多课表切换，显示课程名、教师和教室；已结束的今日课程淡化并划线。
-- **课程与作息管理**：点击课表空白区域添加课程，支持单双周、不连续周、多时段和批量设置作息。
-- **临时安排**：调课、停课、补课、节假日与调休；发现冲突后可定位到对应周。
-- **教务导入**：本科/专科、研究生、通用三个入口，支持学校搜索、手动网址和多来源提取；导入前核对课程数量、周次、教师及地点。
-- **导入与备份**：文件、分享口令、二维码导入；单课表导出、完整备份、本地自动备份、历史恢复与撤销最近修改。
-- **课程提醒**：提前提醒、通知与后台运行状态、下一次提醒和测试通知。
-- **个性化**：浅色、深色及系统动态配色；字号、课程间距、圆角、透明度和对齐方式；可拖动实时预览与自选启动页面。
+<p align="center">
+  <a href="https://github.com/wangshiyulin/qingluan-schedule/releases/latest">下载应用</a> ·
+  <a href="https://schedule.qingluanx.com">官网</a> ·
+  <a href="https://github.com/wangshiyulin/qingluan-schedule/releases">更新日志</a> ·
+  <a href="https://github.com/wangshiyulin/qingluan-schedule/issues">问题反馈</a>
+</p>
 
-## 软件预览
+## 简介
+
+青鸾课程表是一款 Android 课程表应用，支持今日课程、周课表、多课表管理、教务导入、临时调整和备份恢复。课表保存在自己的设备上，无需注册应用账号。
+
+你可以设置独立作息、调整授课周次，为课程添加教师、教室和备注，也可以自定义配色、字号和课表样式。
+
+## 界面预览
 
 <table>
-  <tr><th>今日</th><th>课表</th><th>设置</th></tr>
   <tr>
-    <td><img src="docs/preview/today.webp" alt="今日课表" width="250"></td>
-    <td><img src="docs/preview/week.webp" alt="周课表" width="250"></td>
-    <td><img src="docs/preview/settings.webp" alt="设置" width="250"></td>
+    <td align="center"><img src="https://schedule.qingluanx.com/assets/previews/today.webp" width="240" alt="今日课程页面" /><br />今日</td>
+    <td align="center"><img src="https://schedule.qingluanx.com/assets/previews/week.webp" width="240" alt="周课表页面" /><br />课表</td>
+    <td align="center"><img src="https://schedule.qingluanx.com/assets/previews/settings.webp" width="240" alt="设置页面" /><br />设置</td>
   </tr>
 </table>
 
-## 导入与导出
+## 功能特性
 
-| 格式 | 导入 | 导出 | 内容 |
-| --- | --- | --- | --- |
-| 原生 JSON、分享口令、二维码 | ✓ | ✓ | 单课表，含临时调整及节假日调休 |
-| CSV / TSV | ✓ | CSV | 周期课程 |
-| Excel（XLSX）| ✓ | ✓ | 周期课程 |
-| HTML | ✓ | ✓ | 课表表格及周期课程 |
-| ICS | ✓ | ✓ | 日历事件；本应用往返保留原生课表数据 |
-| PNG / PDF | 二维码图片 | ✓ | 当前教学周的课表图片或文档 |
-| 完整 JSON / ZIP 备份 | ✓ | ✓ | 全部本地课表与设置 |
+- **今日与周课表**：查看日期、教学周和今日课程，滑动切换周次；已结束的今日课程淡化并显示删除线。
+- **多课表管理**：创建、编辑和切换不同学期的课表，分别设置开学日期、总周数、每周起始日和绑定作息。
+- **课程编辑**：点击课表区域添加课程，支持教师、教室、备注、多时段、单双周及不连续周；连续课程合并显示。
+- **作息管理**：创建独立作息表，自定义每节课的起止时间，按课时和休息时长批量设置。
+- **临时调整与调休**：支持调课、停课、补课和撤销调整；节假日可批量停课，调休可采用另一天的常规课表。
+- **课程冲突**：检查重叠课次，查看冲突列表并跳转到对应周；导入前也会提示时间冲突。
+- **教务导入**：本科/专科、研究生、通用三个入口，支持学校搜索和手动网址，可选择自动识别、网页表格或页面数据；导入前核对课程、周次、作息和缺失字段。
+- **导入与导出**：支持原生 JSON、CSV / TSV、Excel（XLSX）、HTML、ICS、分享口令和二维码；可将课表导出为 PNG 或 PDF。
+- **数据与备份**：完整 JSON / ZIP 备份、本地自动备份、历史恢复和撤销最近修改。
+- **课程提醒**：设置提前时间，检查通知权限、后台运行状态和下一次提醒，发送测试通知。
+- **个性化课表**：调整节次高度、课程字号、间距、圆角、透明度和对齐方式；拖动分隔条调整实时预览区域。
+- **操作体验**：透明液态玻璃底栏、页面转场、预测返回、可选触觉反馈和自选启动页面；支持浅色、深色及系统动态配色。
 
-教务目录包含 **214 所学校、230 个 HTTPS 入口**。目录提供导航入口，不代表已经逐校完成兼容性验证。登录后请打开完整学期课表再提取，并核对课程、教师、教室和作息；网站未加载的数据无法凭空补齐。旧课表缺失的字段需要重新导入。
+## 下载
 
-网页解析在本机完成。不同教务系统的页面结构、跨域框架或验证码可能影响识别，遇到问题可改用 Excel / HTML 等文件导入。不支持任意截图 OCR 或其他软件的私有云端口令。
+支持 **Android 15 及以上**。
 
-## 备份与提醒
+前往 [GitHub Releases](https://github.com/wangshiyulin/qingluan-schedule/releases/latest) 下载 `.apk` 安装包。也可以通过应用内的 **设置 → 关于 → 检查更新** 打开发布页面。
 
-课表修改前默认创建本地自动备份，可保留 3、5 或 10 份。自动备份保存在应用私有目录，卸载应用前请导出完整备份。
+## 数据与备份
 
-课程提醒需要通知权限；系统省电策略可能影响准时送达，可在提醒页面检查权限、后台状态并发送测试通知。
+课表默认在本机保存，不会由应用自动上传。教务导入需要打开学校网站，网页解析在本机完成。
 
-## 构建
+<details>
+<summary>备份与使用说明</summary>
 
-使用 Android Studio 打开项目，或通过 Gradle Wrapper 构建。
+- 换设备、卸载或清除应用数据前，请导出完整备份，并保存到应用之外的位置。
+- 本地自动备份可保留 3、5 或 10 份，保存在应用私有目录，卸载应用会一并删除。
+- CSV、XLSX 和 HTML 适合交换周期课程；保留临时调整与节假日调休请选择原生 JSON 或 ICS。完整 JSON / ZIP 备份同时保留全部本地课表和设置。
+- 完整备份恢复会替换本地数据，请先核对预览。
+- 学校目录包含 214 所学校、230 个 HTTPS 入口。目录提供导航，不代表所有学校均已逐一完成兼容性验证。
+- 教务导入前请打开完整学期课表，导入时核对课程总数、教师、教室、周次和作息。网站未加载的数据无法凭空补齐，旧课表缺失字段需重新导入。
+- 不同教务系统的页面结构、跨域框架或验证码可能影响识别，遇到问题可改用 Excel / HTML 等文件导入。不支持任意截图 OCR 或其他软件的私有云端口令。
+- 课程提醒需要通知权限，系统省电策略可能影响送达；可在课程提醒页面检查状态并发送测试通知。
 
-- JDK **21**
-- Android SDK **37.2**，Build Tools **36.0.0**
-- 最低 Android **15 / API 35**，目标 API **37**
+</details>
 
-```bash
-# 调试安装包
-./gradlew assembleDebug
+## 反馈与参与
 
-# 发布安装包（需要自行签名）
-./gradlew assembleRelease
-```
+欢迎通过 [Issues](https://github.com/wangshiyulin/qingluan-schedule/issues) 提交问题和建议。反馈问题时，请附上应用版本、系统版本和复现步骤；提供课表样本前请遮挡账号等个人信息。
 
-Windows 使用 `gradlew.bat` 替代 `./gradlew`。
-
-输出目录为 `app/build/outputs/apk/`。发布构建默认生成未签名 APK；请保管自己的签名密钥，后续更新使用同一签名。源码包不含签名私钥、密码、本机 SDK 路径或构建缓存。
-
-## 技术栈
-
-Kotlin、Jetpack Compose / Material 3、Coroutines / Flow、Room、DataStore、AndroidX WebKit、Jsoup、ZXing 与 Backdrop。
-
-## 许可与致谢
-
-第三方组件、图标、配色和学校入口数据的署名及许可证见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)、[licenses](licenses) 与 `app/src/main/assets/licenses/`。
-
-第三方组件遵循各自许可证。应用图标由项目作者提供。
+- 官网：[schedule.qingluanx.com](https://schedule.qingluanx.com)
+- 作者博客：[qingluanx.com](https://qingluanx.com)
+- 更新记录：[GitHub Releases](https://github.com/wangshiyulin/qingluan-schedule/releases)
+- 开源组件说明：[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)

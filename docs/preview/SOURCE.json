@@ -1,0 +1,21 @@
+{
+  "website": "https://schedule.qingluanx.com",
+  "files": {
+    "today.webp": {
+      "url": "https://schedule.qingluanx.com/assets/previews/today.webp",
+      "sha256": "970695ef34a2d3057f90c2901a504fe7591b79c7c32c5253ae886c4867ed6d71"
+    },
+    "week.webp": {
+      "url": "https://schedule.qingluanx.com/assets/previews/week.webp",
+      "sha256": "142a8813eb0b876e4545a7617d9b2d7c446d95bd26c02e24178d782594a93f50"
+    },
+    "settings.webp": {
+      "url": "https://schedule.qingluanx.com/assets/previews/settings.webp",
+      "sha256": "cdb56d3f77c6057fb6b1e705a78dde7340afd0603836e81ae174c6d10a0d2b4b"
+    },
+    "brand.png": {
+      "url": "https://schedule.qingluanx.com/assets/brand.png",
+      "sha256": "187482f04dd8ba95ac7da0303b3ae6baa2bc8e5ead1e2e03bd89b6200ad5152c"
+    }
+  }
+}
