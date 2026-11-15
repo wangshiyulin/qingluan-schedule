@@ -11,7 +11,10 @@ object HtmlAcademicAdapter {
         Regex("(?:第)?([0-9]+(?:\\s*[-–~～至,，、]\\s*[0-9]+)*)\\s*[（(]?周[）)]?(?:\\s*[（(]?[单双][）)]?)?")
     private val nodes = Regex("[（(\\[]?([0-9]+(?:\\s*[-–~～至,，、]\\s*[0-9]+)*)\\s*节")
 
-    fun decode(html: String): ImportResult {
+    fun decode(html: String): ImportResult =
+        AcademicPeriodReader.apply(decodeCourses(html), Jsoup.parse(html))
+
+    private fun decodeCourses(html: String): ImportResult {
         val doc = Jsoup.parse(html)
         doc.select("script,style,input,textarea,button,nav,header,footer").remove()
         val units =

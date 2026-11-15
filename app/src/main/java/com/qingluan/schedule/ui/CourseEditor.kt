@@ -87,9 +87,7 @@ fun CourseEditor(
             val next = s.withCourse(c)
             BackupCodec.validate(Backup(data = next))
             val clash =
-                ScheduleEngine.conflicts(next, term.id).filter {
-                    it.first.course.id == id || it.second.course.id == id
-                }
+                ScheduleEngine.conflicts(next, term.id, setOf(id))
             if (clash.isNotEmpty()) {
                 val first = clash.first()
                 conflicts =

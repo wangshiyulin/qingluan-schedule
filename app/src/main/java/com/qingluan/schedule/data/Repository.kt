@@ -43,6 +43,7 @@ class Repository(context: Context, private val scope: CoroutineScope) {
     private val db =
         Room.databaseBuilder(app, ScheduleDatabase::class.java, "qingluan_schedule.db").build()
     private val mutex = Mutex()
+    private val localBackups = LocalBackupStore(java.io.File(app.filesDir, "auto_backups"))
     private val ready = CompletableDeferred<Unit>()
     val state = MutableStateFlow<Snapshot?>(null)
     val error = MutableStateFlow<String?>(null)
@@ -93,7 +94,10 @@ class Repository(context: Context, private val scope: CoroutineScope) {
 
     suspend fun awaitReady() = ready.await()
 
-    suspend fun change(transform: (Snapshot) -> Snapshot) =
+    suspend fun change(
+        reason: BackupReason = BackupReason.EDIT,
+        transform: (Snapshot) -> Snapshot,
+    ) =
         withContext(Dispatchers.IO) {
             ready.await()
             mutex.withLock {
@@ -103,6 +107,15 @@ class Repository(context: Context, private val scope: CoroutineScope) {
                 BackupCodec.validate(Backup(data = candidate, settings = settings))
                 val next = candidate.coalesced(previous)
                 BackupCodec.validate(Backup(data = next, settings = settings))
+                if (
+                    settings.autoBackupEnabled &&
+                        previous.copy(activeTermId = next.activeTermId) != next
+                )
+                    localBackups.save(
+                        Backup(data = previous, settings = settings),
+                        reason,
+                        settings.autoBackupKeep,
+                    )
                 db.withTransaction {
                     db.stateDao().write(StateRow(document = BackupCodec.json.encodeToString(next)))
                 }
@@ -118,11 +131,15 @@ class Repository(context: Context, private val scope: CoroutineScope) {
     }
 
     suspend fun updateSettings(change: (AppSettings) -> AppSettings) = mutex.withLock {
+        var retention: Int? = null
         app.preferences.edit { prefs ->
-            val next = change(decodeSettings(prefs[settingsKey]))
+            val old = decodeSettings(prefs[settingsKey])
+            val next = change(old)
+            if (old.autoBackupKeep != next.autoBackupKeep) retention = next.autoBackupKeep
             BackupCodec.validate(Backup(data = state.value ?: Snapshot(), settings = next))
             prefs[settingsKey] = BackupCodec.json.encodeToString(next)
         }
+        retention?.let { localBackups.trim(it) }
     }
 
     suspend fun export(): String {
@@ -146,6 +163,15 @@ class Repository(context: Context, private val scope: CoroutineScope) {
             mutex.withLock {
                 val oldRow = db.stateDao().read()
                 val oldSettings = currentSettings()
+                state.value
+                    ?.takeIf { oldSettings.autoBackupEnabled }
+                    ?.let {
+                        localBackups.save(
+                            Backup(data = it, settings = oldSettings),
+                            BackupReason.RESTORE,
+                            oldSettings.autoBackupKeep,
+                        )
+                    }
                 val document = BackupCodec.json.encodeToString(restored)
                 val pending = BackupCodec.json.encodeToString(b.settings)
                 var committed = false
@@ -188,24 +214,41 @@ class Repository(context: Context, private val scope: CoroutineScope) {
 
     suspend fun saveCourse(c: Course) = change { it.withCourse(c) }
 
-    suspend fun deleteCourse(id: String) = change { s ->
-        s.copy(
-            courses = s.courses.filterNot { it.id == id },
-            exceptions = s.exceptions.filterNot { it.courseId == id },
-        )
+    suspend fun deleteCourse(id: String) =
+        change(BackupReason.DELETE) { s ->
+            s.copy(
+                courses = s.courses.filterNot { it.id == id },
+                exceptions = s.exceptions.filterNot { it.courseId == id },
+            )
+        }
+
+    suspend fun deleteTerm(id: String) =
+        change(BackupReason.DELETE) { s ->
+            val removed = s.courses.filter { it.termId == id }.map { it.id }.toSet()
+            val terms = s.terms.filterNot { it.id == id }
+            s.copy(
+                terms = terms,
+                courses = s.courses.filterNot { it.id in removed },
+                exceptions = s.exceptions.filterNot { it.courseId in removed },
+                calendarRules = s.calendarRules.filterNot { it.termId == id },
+                activeTermId =
+                    if (s.activeTermId == id) terms.firstOrNull()?.id.orEmpty() else s.activeTermId,
+            )
+        }
+
+    suspend fun backupHistory(): List<LocalBackupEntry> =
+        withContext(Dispatchers.IO) { mutex.withLock { localBackups.entries() } }
+
+    suspend fun readLocalBackup(id: String): Backup =
+        withContext(Dispatchers.IO) { mutex.withLock { localBackups.read(id) } }
+
+    suspend fun restoreLocalBackup(id: String) {
+        val b = readLocalBackup(id)
+        restore(b)
     }
 
-    suspend fun deleteTerm(id: String) = change { s ->
-        val removed = s.courses.filter { it.termId == id }.map { it.id }.toSet()
-        val terms = s.terms.filterNot { it.id == id }
-        s.copy(
-            terms = terms,
-            courses = s.courses.filterNot { it.id in removed },
-            exceptions = s.exceptions.filterNot { it.courseId in removed },
-            activeTermId =
-                if (s.activeTermId == id) terms.firstOrNull()?.id.orEmpty() else s.activeTermId,
-        )
-    }
+    suspend fun deleteLocalBackup(id: String) =
+        withContext(Dispatchers.IO) { mutex.withLock { localBackups.delete(id) } }
 
     fun close() = db.close()
 }

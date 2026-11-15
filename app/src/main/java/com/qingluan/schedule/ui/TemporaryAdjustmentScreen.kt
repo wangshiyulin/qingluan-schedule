@@ -99,18 +99,26 @@ fun TemporaryAdjustmentScreen(
             vm.removeException(o.exception.id)
             return
         }
+        val originalDate =
+            if (operation == "add") "" else o.exception?.originalDate ?: o.date.toString()
+        val teachingDate =
+            if (originalDate.isBlank()) ""
+            else
+                o.exception?.originalTeachingDate?.takeIf(String::isNotBlank)
+                    ?: if (o.exception != null) originalDate
+                    else ScheduleEngine.teachingDate(s, term!!.id, o.date)?.toString().orEmpty()
         val x =
             CourseException(
                 id = if (operation == "add") newId() else o.exception?.id ?: newId(),
                 courseId = o.course.id,
                 meetingId = o.meeting.id,
-                originalDate =
-                    if (operation == "add") "" else o.exception?.originalDate ?: o.date.toString(),
+                originalDate = originalDate,
                 targetDate = if (operation == "cancel") "" else target.toString(),
                 startPeriod = start,
                 endPeriod = end,
                 location = room.trim(),
                 teacher = teacher.trim(),
+                originalTeachingDate = teachingDate,
             )
         try {
             val next = s.withException(x)

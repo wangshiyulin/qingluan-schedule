@@ -20,6 +20,9 @@ import com.qingluan.schedule.AppViewModel
 import com.qingluan.schedule.model.*
 import com.qingluan.schedule.transfer.*
 import java.time.LocalDate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private data class SaveFile(val name: String, val mime: String)
 
@@ -35,7 +38,12 @@ private class CreateExchangeFile : ActivityResultContract<SaveFile, Uri?>() {
 }
 
 @Composable
-fun TransferScreen(s: Snapshot, vm: AppViewModel) {
+fun TransferScreen(
+    s: Snapshot,
+    vm: AppViewModel,
+    onLocalBackups: () -> Unit = {},
+    onEducation: () -> Unit = {},
+) {
     val context = LocalContext.current
     var tableId by rememberSaveable { mutableStateOf(s.activeTermId) }
     if (s.terms.none { it.id == tableId }) tableId = s.activeTermId
@@ -57,6 +65,12 @@ fun TransferScreen(s: Snapshot, vm: AppViewModel) {
     var fullBackup by rememberSaveable { mutableStateOf(false) }
     var pendingKind by rememberSaveable { mutableStateOf("table") }
     var pendingFormat by rememberSaveable { mutableStateOf(ExchangeFormat.JSON.name) }
+    val restore =
+        rememberLauncherForActivityResult(
+            androidx.activity.result.contract.ActivityResultContracts.OpenDocument()
+        ) {
+            it?.let(vm::previewRestore)
+        }
     val save =
         rememberLauncherForActivityResult(CreateExchangeFile()) { uri ->
             if (uri != null) {
@@ -92,6 +106,9 @@ fun TransferScreen(s: Snapshot, vm: AppViewModel) {
         contentPadding = PaddingValues(16.dp, 12.dp, 16.dp, 80.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
+        item { SettingsHeading("导入课表") }
+        item { ImportActionRows(vm, onEducation) }
+        item { SettingsHeading("导出课表") }
         if (document != null)
             item {
                 SettingsGroup {
@@ -102,17 +119,9 @@ fun TransferScreen(s: Snapshot, vm: AppViewModel) {
                         { tableId = it },
                         Modifier.fillMaxWidth(),
                     )
-                    Choice(
-                        "图片 / PDF 周次",
-                        week,
-                        (1..document.term.weeks).map { it to "第 $it 周" },
-                        { week = it },
-                        Modifier.fillMaxWidth(),
-                    )
                 }
             }
         if (document != null) {
-            item { SettingsHeading("导出课程表") }
             item {
                 SettingsGroup {
                     InfoCard(
@@ -126,15 +135,22 @@ fun TransferScreen(s: Snapshot, vm: AppViewModel) {
             }
             item {
                 Text(
-                    "CSV / Excel / HTML 保留周期课程；完整临时调整请用 JSON / ICS。",
+                    "CSV / Excel / HTML 保留周期课程；临时调整和节假日请用 JSON / ICS。",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         } else item { EmptyState("暂无课表") }
+        item { SettingsGroup { ValueRow("本地自动备份", "历史与撤销", onLocalBackups) } }
         item { SettingsHeading("全部数据") }
         item {
             SettingsGroup {
+                InfoCard(
+                    "导入完整备份",
+                    "预览后替换全部本地数据",
+                    { Icon(Icons.Outlined.Restore, null) },
+                    { restore.launch(arrayOf("*/*")) },
+                )
                 InfoCard(
                     "导出完整备份",
                     "全部课表和设置",
@@ -210,7 +226,8 @@ private fun ImportPreviewContent(
     var timeConfirmed by rememberSaveable { mutableStateOf(result.assessment?.timeUnknown != true) }
     var timeChoice by rememberSaveable { mutableStateOf("") }
     var timePrompt by rememberSaveable { mutableStateOf(false) }
-    val maxPeriod = document.courses.maxOf { c -> c.meetings.maxOf { it.endPeriod } }
+    val maxPeriod =
+        document.courses.maxOfOrNull { c -> c.meetings.maxOfOrNull { it.endPeriod } ?: 1 } ?: 1
     val compatibleTimes = s.timetables.filter { it.periods.size >= maxPeriod }
     fun useTime(id: String) {
         if (id == "manual") {
@@ -226,24 +243,28 @@ private fun ImportPreviewContent(
     var qualityPrompt by rememberSaveable { mutableStateOf(false) }
     val today = LocalDate.now()
     val week = ScheduleEngine.week(document.term, today)
-    val missingTeacher =
-        document.courses
-            .filter { it.id in included }
-            .count { c ->
-                c.meetings.any { it.teacher.ifBlank { c.teacher }.isBlank() }
-            }
-    val missingRoom =
-        document.courses
-            .filter { it.id in included }
-            .count { c ->
-                c.meetings.any { it.location.ifBlank { c.location }.isBlank() }
-            }
+    var expectedCount by rememberSaveable { mutableStateOf("") }
+    var auditOpen by rememberSaveable { mutableStateOf(false) }
+    var conflictPrompt by remember { mutableStateOf<List<Conflict>?>(null) }
+    var checking by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val selected =
+        document.copy(
+            courses = document.courses.filter { it.id in included },
+            exceptions = document.exceptions.filter { it.courseId in included },
+        )
+    val audit =
+        remember(selected, result, expectedCount) {
+            ImportAudit.inspect(selected, result.assessment, expectedCount.toIntOrNull())
+        }
+    val missingTeacher = audit.missingTeacher
+    val missingRoom = audit.missingLocation
     val qualityIssues =
-        result.assessment != null &&
-            (missingTeacher > 0 ||
-                missingRoom > 0 ||
-                result.assessment.rejected.isNotEmpty() ||
-                result.assessment.incomplete)
+        audit.countMismatch ||
+            audit.rejected > 0 ||
+            audit.incomplete ||
+            missingTeacher > 0 ||
+            missingRoom > 0
     fun calibrate(value: Int) {
         if (value > 0) {
             val start =
@@ -253,14 +274,30 @@ private fun ImportPreviewContent(
             dateConfirmed = true
         }
     }
+    fun commitConfirmed() {
+        vm.importDocument(selected, if (mode == "merge") target else null, onComplete)
+    }
     fun commit() {
-        if (!busy) {
-            val selected =
-                document.copy(
-                    courses = document.courses.filter { it.id in included },
-                    exceptions = document.exceptions.filter { it.courseId in included },
-                )
-            vm.importDocument(selected, if (mode == "merge") target else null, onComplete)
+        if (busy || checking) return
+        checking = true
+        scope.launch {
+            try {
+                val conflicts =
+                    withContext(Dispatchers.Default) {
+                        val candidate =
+                            selected.appendTo(s, if (mode == "merge") target else null).coalesced()
+                        val added =
+                            candidate.courses.map { it.id }.toSet() -
+                                s.courses.map { it.id }.toSet()
+                        ScheduleEngine.conflicts(candidate, candidate.activeTermId, added)
+                    }
+                if (conflicts.isEmpty()) commitConfirmed() else conflictPrompt = conflicts
+            } catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
+                vm.message.value = e.message ?: "无法核对课表"
+            } finally {
+                checking = false
+            }
         }
     }
     FormScreen(
@@ -275,7 +312,7 @@ private fun ImportPreviewContent(
                     else -> commit()
                 }
         },
-        if (busy) "导入中…" else "导入 ${included.size} 门",
+        if (busy || checking) "核对中…" else "导入 ${included.size} 门",
     ) {
         if (result.sources.size > 1)
             Choice(
@@ -287,6 +324,11 @@ private fun ImportPreviewContent(
                 vm::chooseImportSource,
                 Modifier.fillMaxWidth(),
             )
+        ValueRow(
+            "导入核对",
+            "${audit.distinctNames} 个课程名称 · ${audit.meetings} 个时段",
+            { auditOpen = true },
+        )
         if (result.mapping != null) ValueRow("核对字段", "课程 · 教师 · 地点", { fieldDialog = true })
         Text(
             "共 ${document.courses.size} 门课程 · ${document.courses.sumOf {it.meetings.size}} 个时段",
@@ -412,6 +454,73 @@ private fun ImportPreviewContent(
             fieldDialog = false
             vm.remapImport(it)
         }
+    if (auditOpen)
+        FormScreen("导入核对", { auditOpen = false }, { auditOpen = false }, "完成") {
+            OutlinedTextField(
+                expectedCount,
+                {
+                    expectedCount =
+                        it.filter(Char::isDigit).take(4).let { v ->
+                            if ((v.toIntOrNull() ?: 0) <= 5000) v else "5000"
+                        }
+                },
+                label = { Text("原课表课程名称总数（可选）") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Text(
+                if (audit.countMismatch)
+                    "课程数量不符：原课表 ${audit.expectedNames}，已选 ${audit.distinctNames}"
+                else "已选 ${audit.distinctNames} 个课程名称 · ${audit.meetings} 个时段"
+            )
+            Text(
+                "缺少教师 ${audit.missingTeacher} 门 · 缺少教室 ${audit.missingLocation} 门 · 未识别 ${audit.rejected} 条",
+                color = MaterialTheme.colorScheme.error,
+            )
+            result.assessment?.let { Text("来源记录 ${it.detectedRows} 条 · 已解析 ${it.acceptedRows} 条") }
+            selected.courses.take(200).forEach { c ->
+                SectionTitle(c.name)
+                c.meetings.forEach { m ->
+                    Text(
+                        "周${listOf("一","二","三","四","五","六","日")[m.weekday-1]} · 第 ${m.startPeriod}–${m.endPeriod} 节 · ${weekLabel(m.weeks)}\n${m.teacher.ifBlank{c.teacher}.ifBlank{"教师未识别"}} · ${m.location.ifBlank{c.location}.ifBlank{"教室未识别"}}",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
+            result.assessment?.rejected?.take(100)?.forEach {
+                Text(
+                    it,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+    conflictPrompt?.let { conflicts ->
+        AlertDialog(
+            onDismissRequest = { conflictPrompt = null },
+            title = { Text("发现课程冲突") },
+            text = {
+                Text(
+                    (if (conflicts.size >= 500) "至少 500 处" else "${conflicts.size} 处") +
+                        "时间重叠。\n" +
+                        conflicts.take(5).joinToString("\n") {
+                            "${it.date} ${it.first.course.name} / ${it.second.course.name}"
+                        }
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        conflictPrompt = null
+                        commitConfirmed()
+                    }
+                ) {
+                    Text("仍然导入")
+                }
+            },
+            dismissButton = { TextButton(onClick = { conflictPrompt = null }) { Text("返回核对") } },
+        )
+    }
     if (datePrompt)
         SelectionDialog(
             "当前教学周",
@@ -438,7 +547,7 @@ private fun ImportPreviewContent(
             title = { Text("仍有信息需要核对") },
             text = {
                 Text(
-                    "缺少教师 $missingTeacher 门，缺少地点 $missingRoom 门，未识别 ${result.assessment?.rejected?.size?:0} 条。请确认课程总数与周次。"
+                    "缺少教师 $missingTeacher 门，缺少地点 $missingRoom 门，未识别 ${audit.rejected} 条。${if(audit.countMismatch)"课程总数不符。" else ""}请确认课程总数与周次。"
                 )
             },
             confirmButton = {

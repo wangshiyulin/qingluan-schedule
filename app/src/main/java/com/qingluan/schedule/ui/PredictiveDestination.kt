@@ -65,7 +65,8 @@ internal fun PredictiveDestination(
     ) { padding ->
         Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
             when {
-                page == "导入课表" -> ImportTimetableScreen(vm) {}
+                page == "导入与备份" -> TransferScreen(s, vm)
+                page == "教务处导入" -> SchoolImportScreen {}
                 page.isNotBlank() || tab == 2 -> SettingsScreen(s, p, vm, page) {}
                 tab == 0 -> TodayScreen(s, now, {})
                 else -> WeekScreen(s, p, now, previewPager, {}, { _, _ -> }, {})

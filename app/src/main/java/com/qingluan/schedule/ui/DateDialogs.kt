@@ -33,9 +33,11 @@ private fun DialogGlass() {
 
 @Composable
 fun AppDateDialog(date: LocalDate, dismiss: () -> Unit, select: (LocalDate) -> Unit) {
-    val configuration = LocalConfiguration.current
     val density = LocalDensity.current
-    val compact = configuration.screenHeightDp < 480 || density.fontScale > 1.3f
+    val window = LocalWindowInfo.current.containerSize
+    val windowWidth = with(density) { window.width.toDp() }
+    val windowHeight = with(density) { window.height.toDp() }
+    val compact = windowHeight < 480.dp || density.fontScale > 1.3f
     val state =
         rememberDatePickerState(
             initialSelectedDateMillis =
@@ -43,12 +45,12 @@ fun AppDateDialog(date: LocalDate, dismiss: () -> Unit, select: (LocalDate) -> U
             initialDisplayMode = if (compact) DisplayMode.Input else DisplayMode.Picker,
             yearRange = 2000..2100,
         )
-    val width = (minOf(configuration.screenWidthDp.dp - 32.dp, 360.dp) - 48.dp).coerceAtLeast(1.dp)
+    val width = (minOf(windowWidth - 32.dp, 360.dp) - 48.dp).coerceAtLeast(1.dp)
     Dialog(
         onDismissRequest = dismiss,
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
-        val maxHeight = (configuration.screenHeightDp - 48).coerceAtLeast(160).dp
+        val maxHeight = (windowHeight - 48.dp).coerceAtLeast(160.dp)
         val scale = width.value / 360f
         CompositionLocalProvider(
             LocalDensity provides Density(density.density * scale, density.fontScale)

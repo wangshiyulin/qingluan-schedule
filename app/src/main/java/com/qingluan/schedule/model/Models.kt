@@ -62,6 +62,16 @@ data class CourseException(
     val endPeriod: Int = 1,
     val location: String = "",
     val teacher: String = "",
+    val originalTeachingDate: String = "",
+)
+
+@Serializable
+data class CalendarRule(
+    val id: String = newId(),
+    val termId: String,
+    val date: String,
+    val teachingDate: String = "",
+    val name: String = "节假日",
 )
 
 @Serializable
@@ -72,6 +82,7 @@ data class Snapshot(
     val timetables: List<Timetable> = listOf(Timetable(id = "default")),
     val courses: List<Course> = emptyList(),
     val exceptions: List<CourseException> = emptyList(),
+    val calendarRules: List<CalendarRule> = emptyList(),
 )
 
 @Serializable

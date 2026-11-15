@@ -22,6 +22,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     val message = MutableStateFlow<String?>(null)
     val failure = MutableStateFlow<String?>(null)
     val pendingImport = MutableStateFlow<ImportResult?>(null)
+    val localBackups = MutableStateFlow<List<LocalBackupEntry>>(emptyList())
+    val pendingLocalBackup = MutableStateFlow<Pair<LocalBackupEntry, Backup>?>(null)
     val pendingBackup = MutableStateFlow<Backup?>(null)
     private val actionLock = Mutex()
 
@@ -97,6 +99,84 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             repo.change { it.copy(exceptions = it.exceptions.filterNot { x -> x.id == id }) }
         }
 
+    fun loadLocalBackups() = action(showBusy = false) { localBackups.value = repo.backupHistory() }
+
+    fun previewLocalBackup(entry: LocalBackupEntry) = action {
+        pendingLocalBackup.value = entry to repo.readLocalBackup(entry.id)
+    }
+
+    fun restoreLocalBackup(id: String) =
+        action("备份已恢复") {
+            repo.restoreLocalBackup(id)
+            pendingLocalBackup.value = null
+            localBackups.value = repo.backupHistory()
+        }
+
+    fun undoLatestChange() =
+        action("已撤销最近修改") {
+            val entry = repo.backupHistory().firstOrNull() ?: error("暂无自动备份")
+            repo.restoreLocalBackup(entry.id)
+            localBackups.value = repo.backupHistory()
+        }
+
+    fun deleteLocalBackup(id: String) =
+        action("备份已删除") {
+            repo.deleteLocalBackup(id)
+            localBackups.value = repo.backupHistory()
+        }
+
+    fun saveCalendarRange(
+        termId: String,
+        start: java.time.LocalDate,
+        end: java.time.LocalDate,
+        source: java.time.LocalDate?,
+        name: String,
+        editingId: String?,
+        onSaved: () -> Unit,
+    ) =
+        action("安排已保存", onSaved) {
+            require(end >= start && java.time.temporal.ChronoUnit.DAYS.between(start, end) <= 420) {
+                "日期范围无效"
+            }
+            require(source == null || end == start) { "调休请一次选择一天" }
+            val dates = generateSequence(start) { it.plusDays(1) }.takeWhile { it <= end }.toList()
+            repo.change(BackupReason.CALENDAR) { current ->
+                val retained = current.calendarRules.filterNot { it.id == editingId }
+                require(
+                    retained.none {
+                        it.termId == termId && java.time.LocalDate.parse(it.date) in dates
+                    }
+                ) {
+                    "日期已有安排，请编辑原安排"
+                }
+                current.copy(
+                    calendarRules =
+                        retained +
+                            dates.map {
+                                CalendarRule(
+                                    termId = termId,
+                                    date = it.toString(),
+                                    teachingDate = source?.toString().orEmpty(),
+                                    name =
+                                        name.trim().ifBlank { if (source == null) "节假日" else "调休" },
+                                )
+                            }
+                )
+            }
+        }
+
+    fun removeCalendarRule(id: String) =
+        action("安排已删除") {
+            repo.change(BackupReason.CALENDAR) {
+                it.copy(calendarRules = it.calendarRules.filterNot { r -> r.id == id })
+            }
+        }
+
+    fun testReminder() =
+        action("已发送测试提醒") {
+            com.qingluan.schedule.system.SystemCoordinator.sendTestNotification(getApplication())
+        }
+
     fun updateSettings(change: (AppSettings) -> AppSettings) =
         action(showBusy = false) {
             repo.updateSettings(change)
@@ -128,8 +208,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         pendingImport.value = ImportCodec.decode(text.toByteArray())
     }
 
-    fun previewWeb(text: String) = action {
-        pendingImport.value = WebImportPipeline.decode(text)
+    fun previewWeb(text: String, mode: String = "auto") = action {
+        pendingImport.value = WebImportPipeline.decode(text, mode)
     }
 
     fun chooseImportSource(index: Int) {
@@ -144,7 +224,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun importDocument(document: TimetableDocument, targetId: String?, onImported: () -> Unit) =
         action("课表已导入", onImported) {
-            repo.change { document.appendTo(it, targetId) }
+            repo.change(BackupReason.IMPORT) { document.appendTo(it, targetId) }
             pendingImport.value = null
         }
 

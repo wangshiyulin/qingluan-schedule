@@ -1,11 +1,9 @@
 package com.qingluan.schedule.ui
 
 import android.Manifest
-import android.app.AlarmManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
@@ -24,8 +22,9 @@ import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.*
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -33,7 +32,6 @@ import com.qingluan.schedule.*
 import com.qingluan.schedule.R
 import com.qingluan.schedule.data.*
 import com.qingluan.schedule.model.*
-import java.time.LocalDate
 
 object AboutLinks {
     const val website = "https://schedule.qingluanx.com"
@@ -52,11 +50,10 @@ fun SettingsScreen(
     onNavigate: (String) -> Unit,
 ) {
     val ctx = LocalContext.current
+    val resources = LocalResources.current
     val term = s.terms.find { it.id == s.activeTermId }
-    val today = LocalDate.now()
     var license by rememberSaveable { mutableStateOf(false) }
     var paletteOpen by rememberSaveable { mutableStateOf(false) }
-    var manualWeek by rememberSaveable { mutableStateOf(false) }
     val notify =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             vm.updateSettings { it.copy(reminders = granted) }
@@ -66,34 +63,37 @@ fun SettingsScreen(
         runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
             .onFailure { vm.message.value = "无法打开链接" }
     }
-    fun missing() {
-        vm.message.value = "请先创建课表"
-    }
     LazyColumn(
         Modifier.fillMaxSize().testTag(if (page.isBlank()) "my-settings" else "settings-$page"),
         contentPadding = PaddingValues(16.dp, 12.dp, 16.dp, 110.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         if (page.isBlank()) {
-            if (term != null)
-                item {
-                    SettingsGroup {
+            item {
+                SettingsGroup {
+                    if (term != null)
                         Choice(
                             "当前课表",
                             s.activeTermId,
                             s.terms.map { it.id to it.name },
-                            { vm.activate(it) },
+                            vm::activate,
                             Modifier.fillMaxWidth(),
                         )
+                    SettingToggle("显示周末", "", p.showWeekend) { v ->
+                        vm.updateSettings { it.copy(showWeekend = v) }
+                    }
+                    SettingToggle("显示非本周课程", "", p.showNonCurrentWeek) { v ->
+                        vm.updateSettings { it.copy(showNonCurrentWeek = v) }
                     }
                 }
+            }
             item {
                 SettingsGroup {
                     SettingLink(
-                        "课表管理",
+                        "课表列表",
                         "",
                         { Icon(Icons.Outlined.CalendarMonth, null) },
-                        { onNavigate("课表管理") },
+                        { onNavigate("课表列表") },
                     )
                     SettingLink(
                         "课程管理",
@@ -102,10 +102,28 @@ fun SettingsScreen(
                         { onNavigate("课程管理") },
                     )
                     SettingLink(
+                        "作息管理",
+                        "",
+                        { Icon(Icons.Outlined.Schedule, null) },
+                        { onNavigate("作息管理") },
+                    )
+                    SettingLink(
                         "临时调整",
                         "",
                         { Icon(Icons.Outlined.EventRepeat, null) },
                         { onNavigate("临时调整") },
+                    )
+                    SettingLink(
+                        "节假日与调休",
+                        "",
+                        { Icon(Icons.Outlined.CalendarMonth, null) },
+                        { onNavigate("节假日与调休") },
+                    )
+                    SettingLink(
+                        "课程冲突",
+                        "",
+                        { Icon(Icons.Outlined.Info, null) },
+                        { onNavigate("课程冲突") },
                     )
                 }
             }
@@ -128,92 +146,28 @@ fun SettingsScreen(
             item {
                 SettingsGroup {
                     SettingLink(
-                        "导入课表",
-                        "",
-                        { Icon(Icons.Outlined.Language, null) },
-                        { onNavigate("导入课表") },
-                    )
-                    SettingLink(
-                        "备份",
+                        "导入与备份",
                         "",
                         { Icon(Icons.Outlined.SaveAlt, null) },
-                        { onNavigate("备份") },
+                        { onNavigate("导入与备份") },
                     )
                     SettingLink("关于", "", { Icon(Icons.Outlined.Info, null) }, { onNavigate("关于") })
                 }
             }
         }
-        if (page == "课表管理" || page == "通用设置") {
-            item {
-                SettingsGroup {
-                    if (term != null)
-                        DateField(
-                            "开学日期",
-                            LocalDate.parse(term.startDate),
-                            { vm.saveTerm(term.copy(startDate = it.toString())) },
-                            Modifier.fillMaxWidth(),
-                        )
-                    else ValueRow("开学日期", "未设置", ::missing)
-                    val week = term?.let { ScheduleEngine.week(it, today) } ?: 0
-                    ValueRow(
-                        "当前周",
-                        when {
-                            term == null -> "未设置"
-                            week == 0 -> "未开学"
-                            week > term.weeks -> "已结束"
-                            else -> "第 $week 周"
-                        },
-                        { if (term == null) missing() else manualWeek = true },
-                    )
-                    if (term != null) {
-                        Choice(
-                            "总周数",
-                            term.weeks,
-                            (1..60).map { it to "$it 周" },
-                            { vm.saveTerm(term.copy(weeks = it)) },
-                            Modifier.fillMaxWidth(),
-                        )
-                        Choice(
-                            "每周起始日",
-                            term.firstDayOfWeek,
-                            weekdayNames.mapIndexed { i, n -> i + 1 to n },
-                            { vm.saveTerm(term.copy(firstDayOfWeek = it)) },
-                            Modifier.fillMaxWidth(),
-                        )
-                    } else {
-                        ValueRow("总周数", "未设置", ::missing)
-                        ValueRow("每周起始日", "周一", ::missing)
-                    }
-                }
-            }
-            item {
-                SettingsGroup {
-                    SettingToggle("显示周末", "", p.showWeekend) { v ->
-                        vm.updateSettings { it.copy(showWeekend = v) }
-                    }
-                    SettingToggle("显示非本周课程", "", p.showNonCurrentWeek) { v ->
-                        vm.updateSettings { it.copy(showNonCurrentWeek = v) }
-                    }
-                }
-            }
-            item {
-                SettingsGroup {
-                    SettingLink(
-                        "课表列表",
-                        "",
-                        { Icon(Icons.Outlined.CalendarMonth, null) },
-                        { onNavigate("课表列表") },
-                    )
-                    SettingLink(
-                        "作息管理",
-                        "",
-                        { Icon(Icons.Outlined.Schedule, null) },
-                        { onNavigate("作息管理") },
-                    )
-                }
-            }
-        }
         if (page == "个性化") {
+            item {
+                SettingsGroup {
+                    Choice(
+                        "启动页面",
+                        p.startupPage,
+                        listOf(0 to "今日", 1 to "课表", 2 to "设置"),
+                        { v -> vm.updateSettings { it.copy(startupPage = v) } },
+                        Modifier.fillMaxWidth(),
+                    )
+                    ValueRow("个性化课表", "", { onNavigate("个性化课表") })
+                }
+            }
             item { SettingsHeading("外观") }
             item {
                 SettingsGroup {
@@ -238,16 +192,6 @@ fun SettingsScreen(
                             .sorted()
                             .map { it to "${(it*100).toInt()}%" },
                         { v -> vm.updateSettings { it.copy(fontScale = v) } },
-                        Modifier.fillMaxWidth(),
-                    )
-                    Choice(
-                        "节次高度",
-                        p.rowHeight,
-                        (listOf(48, 56, 64, 72, 80, 96, 110) + p.rowHeight)
-                            .distinct()
-                            .sorted()
-                            .map { it to it.toString() },
-                        { v -> vm.updateSettings { it.copy(rowHeight = v) } },
                         Modifier.fillMaxWidth(),
                     )
                 }
@@ -291,60 +235,29 @@ fun SettingsScreen(
                     }
                 }
             }
-            item {
-                SettingsGroup {
-                    SettingLink(
-                        "通知权限",
-                        if (
-                            ContextCompat.checkSelfPermission(
-                                ctx,
-                                Manifest.permission.POST_NOTIFICATIONS,
-                            ) == PackageManager.PERMISSION_GRANTED
-                        )
-                            "已允许"
-                        else "未允许",
-                        { Icon(Icons.Outlined.NotificationsNone, null) },
-                        {
-                            runCatching {
-                                ctx.startActivity(
-                                    Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                                        .putExtra(Settings.EXTRA_APP_PACKAGE, ctx.packageName)
-                                )
-                            }
-                                .onFailure { vm.message.value = "无法打开通知设置" }
-                        },
-                    )
-                    SettingLink(
-                        "准时提醒",
-                        if (ctx.getSystemService(AlarmManager::class.java).canScheduleExactAlarms())
-                            "已允许"
-                        else "未允许",
-                        { Icon(Icons.Outlined.Alarm, null) },
-                        {
-                            runCatching {
-                                ctx.startActivity(
-                                    Intent(
-                                        Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
-                                        Uri.parse("package:${ctx.packageName}"),
-                                    )
-                                )
-                            }
-                                .onFailure { vm.message.value = "无法打开闹钟设置" }
-                        },
-                    )
-                }
-            }
+            item { ReminderDiagnostics(s, p, vm) }
         }
+
         if (page == "关于") {
             item {
                 Column(
                     Modifier.fillMaxWidth().padding(vertical = 24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Image(
-                        painterResource(R.drawable.icon_art),
-                        "青鸾课程表图标",
-                        Modifier.size(88.dp).clip(RoundedCornerShape(24.dp)),
+                    androidx.compose.ui.viewinterop.AndroidView(
+                        factory = { context ->
+                            android.widget.ImageView(context).apply {
+                                setImageDrawable(
+                                    context.applicationInfo.loadIcon(context.packageManager)
+                                )
+                                scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                                contentDescription = "青鸾课程表图标"
+                            }
+                        },
+                        modifier =
+                            Modifier.size(88.dp).testTag("application-icon").semantics {
+                                contentDescription = "青鸾课程表图标"
+                            },
                     )
                     Spacer(Modifier.height(14.dp))
                     Text(
@@ -426,34 +339,16 @@ fun SettingsScreen(
             }
             paletteOpen = false
         }
-    if (manualWeek && term != null)
-        SelectionDialog(
-            "校准当前周",
-            ScheduleEngine.week(term, today).coerceIn(1, term.weeks),
-            (1..term.weeks).map { it to "第 $it 周" },
-            { manualWeek = false },
-        ) { week ->
-            vm.saveTerm(
-                term.copy(
-                    startDate =
-                        ScheduleEngine.weekStart(today, term.firstDayOfWeek)
-                            .minusWeeks((week - 1).toLong())
-                            .toString()
-                )
-            )
-            manualWeek = false
-        }
     if (license)
         AlertDialog(
             onDismissRequest = { license = false },
             title = { Text("开源许可") },
             text = {
                 Text(
-                    remember {
-                        ctx.resources
-                            .openRawResource(R.raw.third_party_notices)
-                            .bufferedReader()
-                            .use { it.readText() }
+                    remember(resources) {
+                        resources.openRawResource(R.raw.third_party_notices).bufferedReader().use {
+                            it.readText()
+                        }
                     },
                     Modifier.heightIn(max = 400.dp).verticalScroll(rememberScrollState()),
                     style = MaterialTheme.typography.bodySmall,

@@ -4,12 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+
+internal val LocalSettingsSelected = staticCompositionLocalOf { false }
 
 internal val LocalSettingsGroup = staticCompositionLocalOf { false }
 
@@ -45,16 +51,49 @@ internal fun SettingsSegment(index: Int, count: Int, content: @Composable () -> 
 
 @Composable
 internal fun Modifier.settingsRow(): Modifier =
-    if (LocalSettingsGroup.current) this.background(MaterialTheme.colorScheme.surfaceContainerLow)
+    if (LocalSettingsGroup.current)
+        this.background(
+            if (LocalSettingsSelected.current) MaterialTheme.colorScheme.primaryContainer
+            else MaterialTheme.colorScheme.surfaceContainerLow
+        )
     else this
 
 @Composable
 internal fun SettingsHeading(title: String) {
-    androidx.compose.material3.Text(
+    Text(
         title,
         Modifier.padding(start = 12.dp, top = 8.dp, bottom = 2.dp),
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.primary,
         fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
     )
+}
+
+/** Read-only status uses the same surface, spacing and typography as adjacent settings. */
+@Composable
+internal fun SettingsStatusRow(title: String, value: String, modifier: Modifier = Modifier) {
+    Row(
+        modifier
+            .fillMaxWidth()
+            .settingsRow()
+            .heightIn(min = 56.dp)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text(
+            title,
+            Modifier.weight(.4f),
+            style = MaterialTheme.typography.bodyLarge,
+        )
+        Text(
+            value,
+            Modifier.weight(.6f),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.End,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
 }

@@ -146,6 +146,45 @@ class GlassFlowTest {
     }
 
     @Test
+    fun schoolSelectionOpensUrlAndLoadingKeepsNativeControlsVisible() {
+        runBlocking { repo.updateSettings { it.copy(theme = "dark") } }
+        ui.onNodeWithText("设置").performClick()
+        settingsItem("导入课表")
+        ui.onNodeWithText("从学校导入").performClick()
+        ui.onNodeWithText("搜索学校").performTextInput("南京中医药大学")
+        ui.onAllNodesWithText("南京中医药大学").onLast().performClick()
+        ui.onNodeWithText("教务网址").assertTextContains("https://jwgl.njucm.edu.cn/student/home")
+        ui.onNodeWithTag("education-loading").assertIsDisplayed()
+        ui.onNodeWithText("教务导入").assertIsDisplayed()
+        ui.onNodeWithText("提取课表").assertIsDisplayed()
+        picture("school-web-loading-dark.png")
+        ui.onNodeWithText("提取课表").assertIsNotEnabled()
+        ui.runOnIdle {
+            fun find(view: android.view.View): android.webkit.WebView? {
+                if (view is android.webkit.WebView) return view
+                if (view is android.view.ViewGroup)
+                    for (i in 0 until view.childCount) find(view.getChildAt(i))?.let {
+                        return it
+                    }
+                return null
+            }
+            val web = find(ui.activity.window.decorView)!!
+            web.webViewClient.onPageCommitVisible(web, "https://jwgl.njucm.edu.cn/student/home")
+        }
+        ui.onNodeWithTag("education-loading").assertDoesNotExist()
+        ui.onNodeWithText("提取课表").assertIsEnabled()
+        ui.onNodeWithText("教务导入").assertIsDisplayed()
+        ui.onNodeWithText("自动识别").performClick()
+        ui.onNodeWithText("提取方式").assertIsDisplayed()
+        ui.onNodeWithText("取消").performClick()
+        ui.runOnIdle { ui.activity.onBackPressedDispatcher.onBackPressed() }
+        ui.waitForIdle()
+        ui.onNodeWithTag("school-import-page").assertIsDisplayed()
+        ui.onNodeWithText("搜索学校").assertTextContains("南京中医药大学")
+        picture("school-search-dark.png")
+    }
+
+    @Test
     fun academicBrowserFitsViewportAndKeepsSafeWebSettings() {
         ui.onNodeWithText("设置").performClick()
         settingsItem("导入课表")
@@ -762,7 +801,7 @@ class GlassFlowTest {
     fun newTableOpensEmptyEditableGrid() {
         runBlocking { repo.restore(Backup()) }
         ui.onNodeWithText("设置").performClick()
-        settingsItem("课表管理")
+        settingsItem("课表列表")
         ui.onNodeWithContentDescription("新建课表").performClick()
         ui.onNodeWithText("课表名称").performTextReplacement("网格课表")
         ui.onNodeWithText("保存").performClick()

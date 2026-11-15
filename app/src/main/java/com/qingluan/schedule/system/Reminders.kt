@@ -19,6 +19,58 @@ import kotlinx.coroutines.sync.withLock
 object SystemCoordinator {
     private val lock = Mutex()
     const val CHANNEL = "courses"
+    const val REFRESH_ACTION = "com.qingluan.schedule.REFRESH"
+    const val TEST_TAG = "qingluan-reminder-test"
+
+    fun ensureChannel(ctx: Context) {
+        ctx.getSystemService(NotificationManager::class.java)
+            .createNotificationChannel(
+                NotificationChannel(CHANNEL, "课前提醒", NotificationManager.IMPORTANCE_HIGH).apply {
+                    description = "课程开始前的本地提醒"
+                }
+            )
+    }
+
+    fun notificationsAllowed(ctx: Context): Boolean =
+        ContextCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) ==
+            PackageManager.PERMISSION_GRANTED &&
+            NotificationManagerCompat.from(ctx).areNotificationsEnabled()
+
+    fun sendTestNotification(ctx: Context) {
+        ensureChannel(ctx)
+        require(notificationsAllowed(ctx)) { "请先允许通知权限" }
+        require(
+            ctx.getSystemService(NotificationManager::class.java)
+                .getNotificationChannel(CHANNEL)
+                ?.importance != NotificationManager.IMPORTANCE_NONE
+        ) {
+            "请先开启课前提醒通道"
+        }
+        val open =
+            PendingIntent.getActivity(
+                ctx,
+                0,
+                Intent(ctx, MainActivity::class.java).putExtra("tab", 0),
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
+        val notification =
+            NotificationCompat.Builder(ctx, CHANNEL)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle("青鸾课程表测试提醒")
+                .setContentText("这是一条测试提醒")
+                .setContentIntent(open)
+                .setAutoCancel(true)
+                .setTimeoutAfter(10000)
+                .build()
+        try {
+            NotificationManagerCompat.from(ctx).notify(TEST_TAG, 1, notification)
+        } catch (_: SecurityException) {
+            error("通知权限已被关闭，请重新允许通知")
+        }
+    }
+
+    fun nextReminder(ctx: Context, s: Snapshot, p: AppSettings): PlannedReminder? =
+        ReminderPlanner.plan(s, p, LocalDateTime.now(), delivered(ctx)).firstOrNull()
 
     private fun ledger(ctx: Context) =
         ctx.getSharedPreferences("alarm_ledger", Context.MODE_PRIVATE)
@@ -70,11 +122,7 @@ object SystemCoordinator {
 
     suspend fun refresh(ctx: Context, s: Snapshot, p: AppSettings) = lock.withLock {
         val notifications = ctx.getSystemService(NotificationManager::class.java)
-        notifications.createNotificationChannel(
-            NotificationChannel(CHANNEL, "课前提醒", NotificationManager.IMPORTANCE_HIGH).apply {
-                description = "课程开始前的本地提醒"
-            }
-        )
+        ensureChannel(ctx)
         val alarm = ctx.getSystemService(AlarmManager::class.java)
         val store = ledger(ctx)
         store.getStringSet("armed", emptySet()).orEmpty().forEach { alarm.cancel(token(ctx, it)) }
@@ -106,7 +154,7 @@ object SystemCoordinator {
             .forEach { editor.remove(it) }
         editor.apply()
         notifications.activeNotifications
-            .filter { it.tag != null && (it.tag !in valid || !p.reminders) }
+            .filter { it.tag != null && it.tag != TEST_TAG && (it.tag !in valid || !p.reminders) }
             .forEach { notifications.cancel(it.tag, it.id) }
         val midnight = LocalDate.now().plusDays(1).atStartOfDay().plusSeconds(3)
         val boundary =
@@ -124,7 +172,7 @@ object SystemCoordinator {
             PendingIntent.getBroadcast(
                 ctx,
                 702,
-                Intent(ctx, RefreshReceiver::class.java).setAction("com.qingluan.schedule.REFRESH"),
+                Intent(ctx, RefreshReceiver::class.java).setAction(REFRESH_ACTION),
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
         if (enabled)
@@ -135,6 +183,19 @@ object SystemCoordinator {
 
 class RefreshReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        if (
+            intent.action !in
+                setOf(
+                    SystemCoordinator.REFRESH_ACTION,
+                    Intent.ACTION_BOOT_COMPLETED,
+                    Intent.ACTION_MY_PACKAGE_REPLACED,
+                    Intent.ACTION_TIME_CHANGED,
+                    Intent.ACTION_TIMEZONE_CHANGED,
+                    Intent.ACTION_DATE_CHANGED,
+                    AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED,
+                )
+        )
+            return
         val pending = goAsync()
         val app = context.applicationContext as ScheduleApplication
         app.applicationScope.launch {

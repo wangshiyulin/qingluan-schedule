@@ -16,10 +16,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.*
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import com.qingluan.schedule.data.AppSettings
 import com.qingluan.schedule.model.*
@@ -35,6 +36,7 @@ fun WeekScreen(
     onAdd: (Int, Int) -> Unit,
     onEditCourse: (Course) -> Unit,
     onMerged: (List<Occurrence>) -> Unit = { onOccurrence(it.first()) },
+    preview: Boolean = false,
 ) {
     val term = s.terms.find { it.id == s.activeTermId }
     if (term == null) {
@@ -64,6 +66,7 @@ fun WeekScreen(
             onAdd,
             onEditCourse,
             onMerged,
+            preview,
         )
     }
 }
@@ -81,6 +84,7 @@ private fun WeekGrid(
     onAdd: (Int, Int) -> Unit,
     onEditCourse: (Course) -> Unit,
     onMerged: (List<Occurrence>) -> Unit,
+    preview: Boolean,
 ) {
     val dates =
         remember(term.startDate, term.firstDayOfWeek, week, p.showWeekend) {
@@ -92,30 +96,134 @@ private fun WeekGrid(
                 .filter { p.showWeekend || it.dayOfWeek.value <= 5 }
         }
     val periods = s.timetables.first { it.id == term.timetableId }.periods
-    val row = p.rowHeight.dp
     val dark = LocalDarkAppearance.current
-    val fontScale = LocalDensity.current.fontScale
     val days = dates.size
-    val gridColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f)
+    val gridColor =
+        if (p.showGridLines) MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f)
+        else Color.Transparent
     BoxWithConstraints(Modifier.fillMaxSize()) {
-        val width = ((maxWidth - 44.dp) / days).coerceAtLeast(1.dp)
-        Column(Modifier.verticalScroll(rememberScrollState()).padding(bottom = 100.dp)) {
+        val width = ((maxWidth - p.timeColumnWidth.dp) / days).coerceAtLeast(1.dp)
+        val measurer = rememberTextMeasurer()
+        val density = LocalDensity.current
+        val titleStyle =
+            TextStyle(
+                fontSize = (13 * p.courseFontScale).sp,
+                lineHeight = (15.6f * p.courseFontScale).sp,
+                fontWeight = if (p.boldCourseNames) FontWeight.Bold else FontWeight.Normal,
+                lineBreak = LineBreak.Paragraph,
+            )
+        val detailStyle =
+            TextStyle(
+                fontSize = (10 * p.courseFontScale).sp,
+                lineHeight = (13 * p.courseFontScale).sp,
+            )
+        val columns =
+            remember(prepared, dates, p.showNonCurrentWeek) {
+                dates.map { date ->
+                    val actual = prepared.onDate(date)
+                    val ghosts =
+                        if (p.showNonCurrentWeek)
+                            prepared.nonCurrentOnDate(date).filter { ghost ->
+                                actual.none {
+                                    it.course.id == ghost.course.id &&
+                                        it.meeting.id == ghost.meeting.id
+                                }
+                            }
+                        else emptyList()
+                    val list =
+                        (lessonBlocks(actual).map { it to false } +
+                                lessonBlocks(ghosts).map { it to true })
+                            .sortedWith(compareBy({ it.first.startPeriod }, { it.second }))
+                    val lanes = mutableListOf<Int>()
+                    val assigned = list.map { (block, inactive) ->
+                        var lane = lanes.indexOfFirst { it < block.startPeriod }
+                        if (lane < 0) {
+                            lane = lanes.size
+                            lanes += block.endPeriod
+                        } else lanes[lane] = block.endPeriod
+                        Triple(block, lane, inactive)
+                    }
+                    assigned to maxOf(1, lanes.size)
+                }
+            }
+        val row =
+            remember(
+                columns,
+                width,
+                p.rowHeight,
+                p.courseFontScale,
+                p.boldCourseNames,
+                p.courseOuterPadding,
+                p.courseInnerPadding,
+                p.showTeacher,
+                p.showLocation,
+                p.showCourseStartTime,
+                density.density,
+                density.fontScale,
+            ) {
+                var needed = p.rowHeight.toFloat()
+                for ((blocks, lanes) in columns) for ((block, _, _) in blocks) {
+                    val spacing =
+                        courseSpacing(
+                            (width / lanes).value,
+                            p.courseOuterPadding,
+                            p.courseInnerPadding,
+                            13 * p.courseFontScale * density.fontScale + 2,
+                        )
+                    val textWidth =
+                        with(density) { spacing.textWidth((width / lanes).value).dp.roundToPx() }
+                            .coerceAtLeast(1)
+                    fun height(text: String, style: TextStyle) =
+                        measurer
+                            .measure(text, style, constraints = Constraints(maxWidth = textWidth))
+                            .size
+                            .height / density.density
+                    var total =
+                        height(block.first.course.name, titleStyle) +
+                            2 * spacing.outer +
+                            2 * spacing.inner +
+                            6f
+                    if (p.showCourseStartTime)
+                        total += height(clock(block.startMinute), detailStyle) + 3f
+                    if (p.showTeacher && block.teacher.isNotBlank())
+                        total += height(block.teacher, detailStyle) + 3f
+                    if (p.showLocation && block.location.isNotBlank())
+                        total +=
+                            height(
+                                block.location,
+                                detailStyle.copy(fontWeight = FontWeight.SemiBold),
+                            ) + 3f
+                    needed =
+                        maxOf(
+                            needed,
+                            kotlin.math.ceil(total / (block.endPeriod - block.startPeriod + 1)),
+                        )
+                }
+                needed.dp
+            }
+        Column(
+            Modifier.verticalScroll(rememberScrollState())
+                .padding(bottom = if (preview) 0.dp else 100.dp)
+        ) {
             Row {
                 Box(
-                    Modifier.width(44.dp).height(50.dp).drawBehind {
-                        drawLine(
-                            gridColor,
-                            Offset(size.width, 0f),
-                            Offset(size.width, size.height),
-                            .65.dp.toPx(),
-                        )
-                        drawLine(
-                            gridColor,
-                            Offset(0f, size.height),
-                            Offset(size.width, size.height),
-                            .65.dp.toPx(),
-                        )
-                    },
+                    Modifier.width(p.timeColumnWidth.dp)
+                        .height(p.dayHeaderHeight.dp)
+                        .testTag("time-header")
+                        .drawBehind {
+                            drawLine(
+                                gridColor,
+                                Offset(size.width, 0f),
+                                Offset(size.width, size.height),
+                                .65.dp.toPx(),
+                            )
+                            drawLine(
+                                gridColor,
+                                Offset(0f, size.height),
+                                Offset(size.width, size.height),
+                                .65.dp.toPx(),
+                            )
+                        },
                     contentAlignment = Alignment.Center,
                 ) {
                     Text("节次", style = MaterialTheme.typography.labelSmall)
@@ -134,7 +242,7 @@ private fun WeekGrid(
                             else Color.Transparent,
                         contentColor = MaterialTheme.colorScheme.onSurface,
                         shape = RoundedCornerShape(14.dp),
-                        modifier = Modifier.width(width).height(50.dp),
+                        modifier = Modifier.width(width).height(p.dayHeaderHeight.dp),
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -145,16 +253,17 @@ private fun WeekGrid(
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = if (today) FontWeight.Bold else FontWeight.Normal,
                             )
-                            Text(
-                                "${date.monthValue}/${date.dayOfMonth}",
-                                style = MaterialTheme.typography.labelSmall,
-                            )
+                            if (p.showDates)
+                                Text(
+                                    "${date.monthValue}/${date.dayOfMonth}",
+                                    style = MaterialTheme.typography.labelSmall,
+                                )
                         }
                     }
                 }
             }
             Row {
-                Column(Modifier.width(44.dp)) {
+                Column(Modifier.width(p.timeColumnWidth.dp)) {
                     periods.forEachIndexed { i, period ->
                         Column(
                             Modifier.height(row)
@@ -182,50 +291,24 @@ private fun WeekGrid(
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Bold,
                             )
-                            Text(
-                                clock(period.start),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                            Text(
-                                clock(period.end),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
+                            if (p.showSectionTime)
+                                Text(
+                                    clock(period.start),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            if (p.showSectionTime)
+                                Text(
+                                    clock(period.end),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
                         }
                     }
                 }
                 repeat(days) { day ->
                     val date = dates[day]
-                    val list =
-                        remember(prepared, date, p.showNonCurrentWeek) {
-                            val actual = prepared.onDate(date)
-                            val ghosts =
-                                if (p.showNonCurrentWeek)
-                                    prepared.nonCurrentOnDate(date).filter { ghost ->
-                                        actual.none {
-                                            it.course.id == ghost.course.id &&
-                                                it.meeting.id == ghost.meeting.id
-                                        }
-                                    }
-                                else emptyList()
-                            (lessonBlocks(actual).map { it to false } +
-                                    lessonBlocks(ghosts).map { it to true })
-                                .sortedWith(compareBy({ it.first.startPeriod }, { it.second }))
-                        }
-                    val (assigned, laneCount) =
-                        remember(list) {
-                            val lanes = mutableListOf<Int>()
-                            val assigned = list.map { (o, inactive) ->
-                                var lane = lanes.indexOfFirst { it < o.startPeriod }
-                                if (lane < 0) {
-                                    lane = lanes.size
-                                    lanes += o.endPeriod
-                                } else lanes[lane] = o.endPeriod
-                                Triple(o, lane, inactive)
-                            }
-                            assigned to maxOf(1, lanes.size)
-                        }
+                    val (assigned, laneCount) = columns[day]
                     Box(Modifier.width(width).height(row * periods.size)) {
                         Column {
                             repeat(periods.size) { period ->
@@ -254,22 +337,21 @@ private fun WeekGrid(
                             val ink =
                                 remember(color, dark, inactive) { courseInk(color, dark, inactive) }
                             val height = row * (block.endPeriod - block.startPeriod + 1)
-                            val locationLines =
-                                if (height.value >= 100 && fontScale <= 1.2f) 2 else 1
-                            val detailHeight =
-                                (if (block.location.isNotBlank()) 13f * locationLines + 3 else 0f) +
-                                    (if (block.teacher.isNotBlank()) 16f else 0f)
-                            val titleLines =
-                                ((height.value - 16 - detailHeight * fontScale) /
-                                        (15.6f * fontScale))
-                                    .toInt()
-                                    .coerceIn(1, 12)
-                            val shape = RoundedCornerShape(10.dp)
+                            val shape = RoundedCornerShape(p.courseCornerRadius.dp)
+                            val spacing =
+                                courseSpacing(
+                                    (width / laneCount).value,
+                                    p.courseOuterPadding,
+                                    p.courseInnerPadding,
+                                    13 * p.courseFontScale * density.fontScale + 2,
+                                )
                             Surface(
-                                color = ink.fill,
+                                color = ink.fill.copy(alpha = ink.fill.alpha * p.courseOpacity),
                                 contentColor = ink.text,
                                 shape = shape,
-                                border = BorderStroke(.65.dp, ink.border),
+                                border =
+                                    if (p.showCourseBorders) BorderStroke(.65.dp, ink.border)
+                                    else null,
                                 modifier =
                                     Modifier.offset(
                                             x = width / laneCount * lane,
@@ -277,7 +359,7 @@ private fun WeekGrid(
                                         )
                                         .width(width / laneCount)
                                         .height(height)
-                                        .padding(2.dp)
+                                        .padding(spacing.outer.dp)
                                         .clip(shape)
                                         .testTag("course-block-${o.key}")
                                         .clickable {
@@ -287,51 +369,80 @@ private fun WeekGrid(
                                         }
                                         .semantics {
                                             contentDescription =
-                                                "${date} ${o.course.name} ${clock(block.startMinute)}至${clock(block.endMinute)} ${block.location}"
+                                                listOf(
+                                                        date.toString(),
+                                                        o.course.name,
+                                                        "${clock(block.startMinute)}至${clock(block.endMinute)}",
+                                                        if (p.showTeacher) block.teacher else "",
+                                                        if (p.showLocation) block.location else "",
+                                                    )
+                                                    .filter(String::isNotBlank)
+                                                    .joinToString(" ")
                                         },
                             ) {
                                 Column(
                                     Modifier.fillMaxSize()
-                                        .padding(horizontal = 4.dp, vertical = 6.dp),
-                                    horizontalAlignment = Alignment.Start,
-                                    verticalArrangement = Arrangement.spacedBy(3.dp, Alignment.Top),
+                                        .padding(
+                                            horizontal = spacing.inner.dp,
+                                            vertical = (spacing.inner + 2).dp,
+                                        ),
+                                    horizontalAlignment =
+                                        if (p.centerCourseText) Alignment.CenterHorizontally
+                                        else Alignment.Start,
+                                    verticalArrangement =
+                                        Arrangement.spacedBy(
+                                            3.dp,
+                                            if (p.centerCourseVertically) Alignment.CenterVertically
+                                            else Alignment.Top,
+                                        ),
                                 ) {
                                     Text(
                                         o.course.name,
-                                        modifier = Modifier.fillMaxWidth().weight(1f, fill = false),
-                                        fontSize = 13.sp,
-                                        lineHeight = 15.6.sp,
-                                        textAlign = TextAlign.Start,
-                                        style =
-                                            MaterialTheme.typography.bodySmall.copy(
-                                                lineBreak = LineBreak.Paragraph
-                                            ),
-                                        fontWeight = FontWeight.Bold,
-                                        maxLines = titleLines,
-                                        overflow = TextOverflow.Ellipsis,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        fontSize = (13 * p.courseFontScale).sp,
+                                        lineHeight = (15.6f * p.courseFontScale).sp,
+                                        textAlign =
+                                            if (p.centerCourseText) TextAlign.Center
+                                            else TextAlign.Start,
+                                        style = titleStyle,
+                                        fontWeight =
+                                            if (p.boldCourseNames) FontWeight.Bold
+                                            else FontWeight.Normal,
                                     )
-                                    if (block.teacher.isNotBlank())
+                                    if (p.showCourseStartTime)
+                                        Text(
+                                            clock(block.startMinute),
+                                            modifier = Modifier.fillMaxWidth(),
+                                            style = detailStyle,
+                                            color = ink.detail,
+                                            textAlign =
+                                                if (p.centerCourseText) TextAlign.Center
+                                                else TextAlign.Start,
+                                        )
+                                    if (p.showTeacher && block.teacher.isNotBlank())
                                         Text(
                                             block.teacher,
                                             modifier = Modifier.fillMaxWidth(),
-                                            textAlign = TextAlign.Start,
+                                            textAlign =
+                                                if (p.centerCourseText) TextAlign.Center
+                                                else TextAlign.Start,
                                             color = ink.detail,
-                                            fontSize = 10.sp,
-                                            lineHeight = 13.sp,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis,
+                                            style = detailStyle,
+                                            fontSize = (10 * p.courseFontScale).sp,
+                                            lineHeight = (13 * p.courseFontScale).sp,
                                         )
-                                    if (block.location.isNotBlank())
+                                    if (p.showLocation && block.location.isNotBlank())
                                         Text(
                                             block.location,
                                             modifier = Modifier.fillMaxWidth(),
-                                            textAlign = TextAlign.Start,
+                                            textAlign =
+                                                if (p.centerCourseText) TextAlign.Center
+                                                else TextAlign.Start,
                                             color = ink.detail,
-                                            fontSize = 10.sp,
-                                            lineHeight = 13.sp,
+                                            style = detailStyle,
+                                            fontSize = (10 * p.courseFontScale).sp,
+                                            lineHeight = (13 * p.courseFontScale).sp,
                                             fontWeight = FontWeight.SemiBold,
-                                            maxLines = locationLines,
-                                            overflow = TextOverflow.Ellipsis,
                                         )
                                 }
                             }

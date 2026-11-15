@@ -175,6 +175,7 @@ internal object AcademicFields {
                     ),
                 )
                 .ifBlank { positional(1, roomLabels) }
-        return Values(teacher, room)
+        val inline = AcademicInlineText.read(item)
+        return Values(teacher.ifBlank { inline.teacher }, room.ifBlank { inline.room })
     }
 }

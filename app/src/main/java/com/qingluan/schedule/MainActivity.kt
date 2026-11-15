@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         model =
             ViewModelProvider(this, viewModelFactory { initializer { AppViewModel(application) } })[
                 AppViewModel::class.java]
-        setContent { QingluanApp(intent.getIntExtra("tab", 0), model) }
+        setContent { QingluanApp(intent.getIntExtra("tab", -1), model) }
         if (savedInstanceState == null) readIncoming(intent)
     }
 

@@ -28,7 +28,13 @@ object ScheduleEngine {
     fun prepare(s: Snapshot, termId: String): Prepared? {
         val term = s.terms.find { it.id == termId } ?: return null
         val periods = s.timetables.find { it.id == term.timetableId }?.periods ?: return null
-        return Prepared(term, periods, s.courses.filter { it.termId == termId }, s.exceptions)
+        return Prepared(
+            term,
+            periods,
+            s.courses.filter { it.termId == termId },
+            s.exceptions,
+            s.calendarRules.filter { it.termId == termId },
+        )
     }
 
     class Prepared
@@ -37,7 +43,15 @@ object ScheduleEngine {
         private val periods: List<Period>,
         courses: List<Course>,
         exceptions: List<CourseException>,
+        rules: List<CalendarRule>,
     ) {
+        private val calendar = rules.associateBy { it.date }
+
+        private fun source(date: LocalDate): LocalDate? {
+            val rule = calendar[date.toString()] ?: return date
+            return rule.teachingDate.takeIf(String::isNotBlank)?.let(LocalDate::parse)
+        }
+
         private val byCourse = courses.associateBy { it.id }
         private val slots = courses.flatMap { course -> course.meetings.map { course to it } }
         private val byDay = slots.groupBy { it.second.weekday }
@@ -56,8 +70,10 @@ object ScheduleEngine {
             val day = date.toString()
             val skips = cancelled[day].orEmpty()
             val result = mutableListOf<Occurrence>()
-            byDay[date.dayOfWeek.value].orEmpty().forEach { (course, meeting) ->
-                if (week in meeting.weeks && (course.id to meeting.id) !in skips)
+            val reference = source(date)
+            val teachingWeek = reference?.let { week(term, it) }
+            byDay[reference?.dayOfWeek?.value].orEmpty().forEach { (course, meeting) ->
+                if (teachingWeek in meeting.weeks && (course.id to meeting.id) !in skips)
                     occurrence(
                             course,
                             meeting,
@@ -91,11 +107,13 @@ object ScheduleEngine {
         fun nonCurrentOnDate(date: LocalDate): List<Occurrence> {
             val week = week(term, date)
             if (week !in 1..term.weeks) return emptyList()
-            return byDay[date.dayOfWeek.value]
+            val reference = source(date) ?: return emptyList()
+            val teachingWeek = week(term, reference)
+            return byDay[reference.dayOfWeek.value]
                 .orEmpty()
                 .filter {
-                    week !in it.second.weeks &&
-                        it.second.weeks.any { taughtWeek -> taughtWeek > week }
+                    teachingWeek !in it.second.weeks &&
+                        it.second.weeks.any { taughtWeek -> taughtWeek > teachingWeek }
                 }
                 .mapNotNull { (course, meeting) ->
                     occurrence(
@@ -146,7 +164,20 @@ object ScheduleEngine {
         )
     }
 
-    fun conflicts(s: Snapshot, termId: String): List<Conflict> {
+    fun teachingDate(s: Snapshot, termId: String, date: LocalDate): LocalDate? {
+        val rule =
+            s.calendarRules.firstOrNull { it.termId == termId && it.date == date.toString() }
+                ?: return date
+        return rule.teachingDate.takeIf(String::isNotBlank)?.let(LocalDate::parse)
+    }
+
+    fun conflicts(
+        s: Snapshot,
+        termId: String,
+        focusCourseIds: Set<String>? = null,
+        limit: Int = 500,
+    ): List<Conflict> {
+        require(limit in 1..5000)
         val prepared = prepare(s, termId) ?: return emptyList()
         val term = prepared.term
         val result = mutableListOf<Conflict>()
@@ -156,8 +187,17 @@ object ScheduleEngine {
             for (i in list.indices) for (j in i + 1 until list.size) {
                 val a = list[i]
                 val b = list[j]
-                if (a.startMinute < b.endMinute && b.startMinute < a.endMinute)
+                if (b.startMinute >= a.endMinute) break
+                if (
+                    focusCourseIds != null &&
+                        a.course.id !in focusCourseIds &&
+                        b.course.id !in focusCourseIds
+                )
+                    continue
+                if (a.startMinute < b.endMinute && b.startMinute < a.endMinute) {
                     result += Conflict(date, a, b)
+                    if (result.size >= limit) return result
+                }
             }
             date = date.plusDays(1)
         }

@@ -18,7 +18,8 @@ data class AcademicWebCapture(
  * Keep independent sources selectable; prefer explicit data over heuristic visual reconstruction.
  */
 object WebImportPipeline {
-    fun decode(text: String): ImportResult {
+    fun decode(text: String, mode: String = "auto"): ImportResult {
+        require(mode in setOf("auto", "table", "data")) { "未知提取方式" }
         require(text.toByteArray().size <= BackupCodec.MAX_BYTES) { "页面内容超过8 MiB，请打开独立课表页面" }
         val capture = BackupCodec.json.decodeFromString<AcademicWebCapture>(text)
         require(
@@ -68,16 +69,17 @@ object WebImportPipeline {
                 }
                 .onFailure { errors += it.message.orEmpty().take(150) }
         }
-        if (capture.records.isNotEmpty())
+        if (mode != "table" && capture.records.isNotEmpty())
             source("网页接口 / 页面数据") {
                 AcademicJsonCodec.decode(
                     listOf(JsonObject(mapOf("records" to capture.records))),
                     "网页接口 / 页面数据",
                 )
             }
-        capture.documents.forEachIndexed { index, html ->
-            source("课表网页 ${index+1}") { HtmlAcademicAdapter.decode(html) }
-        }
+        if (mode != "data")
+            capture.documents.forEachIndexed { index, html ->
+                source("课表网页 ${index+1}") { HtmlAcademicAdapter.decode(html) }
+            }
         require(options.isNotEmpty()) {
             "未能识别完整课表：${errors.firstOrNull().orEmpty()}。请打开完整学期课表，或使用教务导出的文件"
         }

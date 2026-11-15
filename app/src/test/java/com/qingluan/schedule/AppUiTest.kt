@@ -24,12 +24,7 @@ class AppUiTest {
         get() = (ui.activity.application as ScheduleApplication).repository
 
     private fun openMyItem(label: String) {
-        val managed = label in listOf("作息管理", "开学日期", "总周数", "当前周", "每周起始日", "显示周末", "显示非本周课程")
-        if (managed && ui.onAllNodesWithTag("my-settings").fetchSemanticsNodes().isNotEmpty())
-            ui.onNodeWithText("课表管理").performClick()
-        if (!managed && ui.onAllNodesWithTag("settings-课表管理").fetchSemanticsNodes().isNotEmpty())
-            ui.onNodeWithContentDescription("返回").performClick()
-        val list = ui.onNodeWithTag(if (managed) "settings-课表管理" else "my-settings")
+        val list = ui.onNodeWithTag("my-settings")
         list.performScrollToNode(hasText(label))
         val target = ui.onNodeWithText(label).fetchSemanticsNode().boundsInRoot.center.y
         val center = list.fetchSemanticsNode().boundsInRoot.center.y

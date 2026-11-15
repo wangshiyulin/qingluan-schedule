@@ -224,4 +224,38 @@ class RepositoryTest {
         repo.saveCourse(repo.state.value!!.courses.single().copy(name = "高等数学"))
         assertEquals(1, repo.state.value!!.exceptions.size)
     }
+
+    @Test
+    fun autoHistoryPrecedesChangesSkipsActivationAndInvalidDataAndCanUndo() = runBlocking {
+        seed()
+        val original = repo.state.value!!
+        val initial = repo.backupHistory().size
+        repo.change { it }
+        assertEquals(initial, repo.backupHistory().size)
+        assertTrue(runCatching { repo.change { it.copy(activeTermId = "bad") } }.isFailure)
+        assertEquals(initial, repo.backupHistory().size)
+        repo.change { it.copy(courses = it.courses.map { c -> c.copy(name = "新名称") }) }
+        val latest = repo.backupHistory().first()
+        assertEquals(original, repo.readLocalBackup(latest.id).data)
+        repo.restoreLocalBackup(latest.id)
+        assertEquals(original, repo.state.value)
+        assertEquals(
+            "新名称",
+            repo.readLocalBackup(repo.backupHistory().first().id).data.courses.single().name,
+        )
+        val count = repo.backupHistory().size
+        repo.updateSettings { it.copy(autoBackupEnabled = false) }
+        repo.deleteTerm("t")
+        assertEquals(count, repo.backupHistory().size)
+    }
+
+    @Test
+    fun termDeletionRemovesCalendarRules() = runBlocking {
+        seed()
+        repo.change {
+            it.copy(calendarRules = listOf(CalendarRule(termId = "t", date = "2026-09-07")))
+        }
+        repo.deleteTerm("t")
+        assertTrue(repo.state.value!!.calendarRules.isEmpty())
+    }
 }

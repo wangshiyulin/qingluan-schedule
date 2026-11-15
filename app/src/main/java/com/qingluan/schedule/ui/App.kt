@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun QingluanApp(initialTab: Int = 0, vm: AppViewModel) {
+fun QingluanApp(initialTab: Int = -1, vm: AppViewModel) {
     val data by vm.state.collectAsStateWithLifecycle()
     val p by vm.settings.collectAsStateWithLifecycle()
     val busy by vm.busy.collectAsStateWithLifecycle()
@@ -45,30 +45,48 @@ fun QingluanApp(initialTab: Int = 0, vm: AppViewModel) {
     val backup by vm.pendingBackup.collectAsStateWithLifecycle()
     val loadError by vm.repo.error.collectAsStateWithLifecycle()
     var tab by rememberSaveable { mutableIntStateOf(initialTab.coerceIn(0, 2)) }
+    var startupApplied by rememberSaveable { mutableStateOf(initialTab >= 0) }
+    LaunchedEffect(Unit) {
+        if (!startupApplied) {
+            tab = vm.repo.currentSettings().startupPage
+            startupApplied = true
+        }
+    }
     var page by rememberSaveable { mutableStateOf("") }
+    var educationUrl by rememberSaveable { mutableStateOf("") }
     var switchOpen by rememberSaveable { mutableStateOf(false) }
     var weekPickerOpen by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     var history by rememberSaveable { mutableStateOf(listOf<Int>()) }
     if (tab !in 0..2) tab = tab.coerceIn(0, 2)
     when (page) {
-        "课表设置" -> page = "通用设置"
+        "课表设置",
+        "课表管理",
+        "通用设置" -> page = "课表列表"
         "外观设置" -> page = "个性化"
-        "备份与恢复" -> page = "备份"
+        "备份与恢复",
+        "备份",
+        "导入课表" -> page = "导入与备份"
         "单次调整" -> page = "临时调整"
         "桌面小组件",
         "切换课表" -> page = ""
     }
+    var focusWeek by rememberSaveable { mutableIntStateOf(0) }
     val screenStates = rememberSaveableStateHolder()
+    val educationStates = rememberSaveableStateHolder()
     val backMotion = remember { Animatable(0f) }
     var backDirection by remember { mutableFloatStateOf(1f) }
     fun goBack() {
+        if (page == "教务处导入" && educationUrl.isNotBlank()) {
+            educationUrl = ""
+            return
+        }
         if (page.isNotBlank())
             page =
                 when (page) {
-                    "课表列表",
-                    "作息管理" -> "课表管理"
-                    "教务导入" -> "导入课表"
+                    "教务处导入",
+                    "本地自动备份" -> "导入与备份"
+                    "个性化课表" -> "个性化"
                     else -> ""
                 }
         else if (history.isNotEmpty()) {
@@ -135,7 +153,7 @@ fun QingluanApp(initialTab: Int = 0, vm: AppViewModel) {
     }
     QingluanTheme(p) {
         GlassPage(Modifier.fillMaxSize()) {
-            val s = data
+            val s = if (startupApplied) data else null
             if (s == null) {
                 Surface(
                     Modifier.fillMaxSize(),
@@ -173,6 +191,12 @@ fun QingluanApp(initialTab: Int = 0, vm: AppViewModel) {
                             pageCount = { term?.weeks ?: 1 },
                         )
                     }
+                LaunchedEffect(term?.id, focusWeek) {
+                    if (focusWeek > 0 && term != null) {
+                        weekPager.scrollToPage((focusWeek - 1).coerceIn(0, term.weeks - 1))
+                        focusWeek = 0
+                    }
+                }
                 fun createTerm() {
                     termEdit = null
                     termOpen = true
@@ -195,9 +219,9 @@ fun QingluanApp(initialTab: Int = 0, vm: AppViewModel) {
                         val targetTab = if (page.isNotBlank()) tab else history.lastOrNull() ?: tab
                         val targetPage =
                             when (page) {
-                                "课表列表",
-                                "作息管理" -> "课表管理"
-                                "教务导入" -> "导入课表"
+                                "教务处导入" -> if (educationUrl.isNotBlank()) "教务处导入" else "导入与备份"
+                                "本地自动备份" -> "导入与备份"
+                                "个性化课表" -> "个性化"
                                 else -> ""
                             }
                         PredictiveDestination(
@@ -313,7 +337,8 @@ fun QingluanApp(initialTab: Int = 0, vm: AppViewModel) {
                         Box(
                             Modifier.padding(top = padding.calculateTopPadding())
                                 .then(
-                                    if (hardware) Modifier.layerBackdrop(navigationBackdrop)
+                                    if (hardware && page != "教务处导入")
+                                        Modifier.layerBackdrop(navigationBackdrop)
                                     else Modifier
                                 )
                         ) {
@@ -333,15 +358,41 @@ fun QingluanApp(initialTab: Int = 0, vm: AppViewModel) {
                                 }
                                 Box(
                                     Modifier.fillMaxSize().testTag("screen-content").graphicsLayer {
-                                        alpha = .7f + .3f * entry.value
+                                        alpha =
+                                            if (child == "教务处导入") 1f else .7f + .3f * entry.value
                                     }
                                 ) {
                                     screenStates.SaveableStateProvider("$screen/$child") {
                                         when {
-                                            child == "备份" -> TransferScreen(s, vm)
-                                            child == "导入课表" ->
-                                                ImportTimetableScreen(vm) { page = "教务导入" }
-                                            child == "教务导入" -> EducationImportScreen(vm)
+                                            child == "导入与备份" ->
+                                                TransferScreen(
+                                                    s,
+                                                    vm,
+                                                    onLocalBackups = { page = "本地自动备份" },
+                                                ) {
+                                                    educationUrl = ""
+                                                    page = "教务处导入"
+                                                }
+                                            child == "本地自动备份" -> LocalBackupsScreen(p, vm)
+                                            child == "节假日与调休" -> CalendarRulesScreen(s, vm)
+                                            child == "课程冲突" ->
+                                                ConflictListScreen(s) { week ->
+                                                    focusWeek = week
+                                                    page = ""
+                                                    tab = 1
+                                                }
+                                            child == "个性化课表" -> ScheduleAppearance(p, vm)
+                                            child == "教务处导入" ->
+                                                if (educationUrl.isBlank())
+                                                    educationStates.SaveableStateProvider(
+                                                        "selector"
+                                                    ) {
+                                                        SchoolImportScreen { educationUrl = it }
+                                                    }
+                                                else
+                                                    key(educationUrl) {
+                                                        EducationImportScreen(vm, educationUrl)
+                                                    }
                                             child == "临时调整" ->
                                                 TemporaryAdjustmentScreen(
                                                     s,

@@ -47,6 +47,11 @@ object HtmlGridParser {
     }
 
     private fun courseParts(cell: Element): List<String> {
+        AcademicInlineText.split(cell)
+            .takeIf { it.isNotEmpty() }
+            ?.let {
+                return it
+            }
         // Legacy Zhengfang grids flatten each entry into name/time/room/teacher fonts.
         if (
             cell.hasClass("td_wrap") &&

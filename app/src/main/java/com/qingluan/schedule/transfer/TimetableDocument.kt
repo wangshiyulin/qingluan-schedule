@@ -18,6 +18,7 @@ data class TimetableDocument(
     val timetable: Timetable,
     val courses: List<Course>,
     val exceptions: List<CourseException> = emptyList(),
+    val calendarRules: List<CalendarRule> = emptyList(),
 ) {
     fun snapshot() =
         Snapshot(
@@ -26,6 +27,7 @@ data class TimetableDocument(
             timetables = listOf(timetable),
             courses = courses,
             exceptions = exceptions,
+            calendarRules = calendarRules,
         )
 
     fun validate(): TimetableDocument {
@@ -72,6 +74,16 @@ data class TimetableDocument(
                 meetingId = meetingIds.getValue(x.courseId to x.meetingId),
             )
         }
+        val rules = calendarRules.map { it.copy(id = newId(), termId = termId) }
+        val existingRules =
+            current.calendarRules.filter { it.termId == termId }.associateBy { it.date }
+        require(
+            rules.none {
+                existingRules[it.date]?.let { old -> old.teachingDate != it.teachingDate } == true
+            }
+        ) {
+            "调休设置不同，请新建课表导入"
+        }
         return current
             .copy(
                 activeTermId = termId,
@@ -83,6 +95,7 @@ data class TimetableDocument(
                     else current.timetables,
                 courses = current.courses + imported,
                 exceptions = current.exceptions + changes,
+                calendarRules = current.calendarRules + rules.filter { it.date !in existingRules },
             )
             .also { BackupCodec.validate(Backup(data = it)) }
     }
@@ -97,6 +110,7 @@ data class TimetableDocument(
                     timetable = s.timetables.first { it.id == t.timetableId },
                     courses = courses,
                     exceptions = s.exceptions.filter { it.courseId in ids },
+                    calendarRules = s.calendarRules.filter { it.termId == id },
                 )
                 .validate()
         }

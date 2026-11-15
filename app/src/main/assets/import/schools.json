@@ -1,0 +1,1842 @@
+[
+  {
+    "id": "AHZYYGZ_01",
+    "name": "安徽中医药高等专科学校",
+    "initial": "A",
+    "label": "安徽中医药高等专科学校",
+    "url": "https://authserver.ahzyygz.edu.cn/authserver/login?service=http://jwxt.ahzyygz.edu.cn/ahzyygzjw/caslogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "AEPU_01",
+    "name": "安徽电气工程职业技术学院",
+    "initial": "A",
+    "label": "安徽电气工程职业技术学院教务系统",
+    "url": "https://zt.aepu.com.cn/http/webvpnae4cfe98f83bc8811cc5963452fd80627ab088b1bddf3f753580a56a75a714e9/ywtb-portal/official/index.html#/hall",
+    "category": "undergraduate"
+  },
+  {
+    "id": "AUFE_01",
+    "name": "安徽财经大学",
+    "initial": "A",
+    "label": "安徽财经大学校内入口",
+    "url": "https://all.aufe.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "BJTU",
+    "name": "北京交通大学",
+    "initial": "B",
+    "label": "北京交通大学教学支撑平台",
+    "url": "https://mis.bjtu.edu.cn/home/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "BTBU",
+    "name": "北京工商大学",
+    "initial": "B",
+    "label": "北京工商大学本科教务",
+    "url": "https://jwgl.btbu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "BNUZH_01",
+    "name": "北京师范大学珠海校区",
+    "initial": "B",
+    "label": "北京师范大学珠海校区金智教务",
+    "url": "https://jwxt.bnuzh.edu.cn/caslogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "BUPT_01",
+    "name": "北京邮电大学",
+    "initial": "B",
+    "label": "北京邮电大学本科教务",
+    "url": "https://jwgl.bupt.edu.cn/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NCUT_01",
+    "name": "北方工业大学",
+    "initial": "B",
+    "label": "北方工业大学-教务系统",
+    "url": "https://jwxtbk.ncut.edu.cn/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "BBGU_01",
+    "name": "北部湾大学",
+    "initial": "B",
+    "label": "北部湾大学教务系统",
+    "url": "https://zhjw.bbgu.edu.cn/workspace/home",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CCZU",
+    "name": "常州大学",
+    "initial": "C",
+    "label": "常州大学教务管理信息系统",
+    "url": "https://zmvpn.cczu.edu.cn/http/webvpndc2d086cb5b297c15e661687e73c1549/web_jxrw/cx_kb_xsgrkb.aspx",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CZIMT_01",
+    "name": "常州机电职业技术学院",
+    "initial": "C",
+    "label": "常州机电职业技术学院-正方教务",
+    "url": "https://webapp.czimt.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CDUTCM_01",
+    "name": "成都中医药大学",
+    "initial": "C",
+    "label": "成都中医药大学教务",
+    "url": "https://jwweb.cdutcm.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CUIT_02",
+    "name": "成都信息工程大学",
+    "initial": "C",
+    "label": "成都信息工程大学教务管理系统",
+    "url": "https://jwc.cuit.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CUIT_01",
+    "name": "成都信息工程大学",
+    "initial": "C",
+    "label": "成都信息工程大学本科实践教学平台",
+    "url": "https://ywtb.cuit.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CMC_01",
+    "name": "成都医学院",
+    "initial": "C",
+    "label": "成都医学院教务",
+    "url": "https://jwweb.cmc.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CAPU",
+    "name": "成都航空职业技术大学",
+    "initial": "C",
+    "label": "成都航空职业技术大学金智新教务",
+    "url": "https://jwxt.cap.edu.cn/jwapp/sys/homeapp/home/index.html?av=&contextPath=/jwapp#/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "YXHMC",
+    "name": "成都银杏酒店管理学院",
+    "initial": "C",
+    "label": "成都银杏酒店管理学院教务",
+    "url": "https://zfjw.gingkoc.edu.cn/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CQJTU",
+    "name": "重庆交通大学",
+    "initial": "C",
+    "label": "重庆交通大学教务",
+    "url": "https://jwgln.cqjtu.edu.cn/jsxsd/sso.jsp",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CQRK_01",
+    "name": "重庆人文科技学院",
+    "initial": "C",
+    "label": "重庆人文科技学院强智适配",
+    "url": "https://https-auth-cqrk-edu-cn-443.webvpn.cqrk.edu.cn:8480/cas/login?service=http%3A%2F%2Fportal.cqrk.edu.cn&rewrite=1",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CQU",
+    "name": "重庆大学",
+    "initial": "C",
+    "label": "重庆大学教务",
+    "url": "https://my.cqu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CQIE_01",
+    "name": "重庆工程学院",
+    "initial": "C",
+    "label": "重庆工程学院教务",
+    "url": "https://i.cqie.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CQUT",
+    "name": "重庆理工大学",
+    "initial": "C",
+    "label": "重庆理工大学教务",
+    "url": "https://timetable-cfc.cqut.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CQUET_01",
+    "name": "重庆电子科技职业大学",
+    "initial": "C",
+    "label": "强智",
+    "url": "https://cquet.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CQUST_01",
+    "name": "重庆科技大学",
+    "initial": "C",
+    "label": "重庆科技大学本科教务 (WebVPN/推荐)",
+    "url": "https://web.cqust.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CCIT",
+    "name": "长春工程学院",
+    "initial": "C",
+    "label": "长春工程学院强智教务",
+    "url": "https://webvpn.ccit.edu.cn/auth/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CUST_02",
+    "name": "长春理工大学",
+    "initial": "C",
+    "label": "长春理工大学融合课表（朝阳校区·研究生）",
+    "url": "https://kbpro.cust.edu.cn/Schedule/",
+    "category": "postgraduate"
+  },
+  {
+    "id": "CUST_01",
+    "name": "长春理工大学",
+    "initial": "C",
+    "label": "长春理工大学融合课表（朝阳校区·本科）",
+    "url": "https://kbpro.cust.edu.cn/Schedule/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "YU_01",
+    "name": "长江大学",
+    "initial": "C",
+    "label": "长江大学教务系统适配",
+    "url": "https://cas-yangtzeu-edu-cn.atrust.yangtzeu.edu.cn/authserver/login?service=https%3A%2F%2Fatrust.yangtzeu.edu.cn%3A4443%2Fpassport%2Fv1%2Fauth%2Fcas%3FsfDomain%3DCAS",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CCSUT_01",
+    "name": "长沙工业学院",
+    "initial": "C",
+    "label": "长沙工业学院超星教务",
+    "url": "https://auth.ccsut.cn/backstage/cas/login?service=https%3A%2F%2Fehall.ccsut.cn%2Fbackstage%2Fcas-proxy%2Fapp%2Fredirect%3FserverName%3Dhttps%253A%252F%252Fehall.ccsut.cn%26wechatBindFlag%3D1",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NEAU_01",
+    "name": "东北农业大学",
+    "initial": "D",
+    "label": "东北农业大学适配教务",
+    "url": "https://webvpn.neau.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NEU_2",
+    "name": "东北大学",
+    "initial": "D",
+    "label": "东北大学研究生金智教育教务适配",
+    "url": "https://yjs.neu.edu.cn/",
+    "category": "postgraduate"
+  },
+  {
+    "id": "NEUQ",
+    "name": "东北大学秦皇岛分校",
+    "initial": "D",
+    "label": "东北大学秦皇岛分校树维教务",
+    "url": "https://jwxt.neuq.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NENU_01",
+    "name": "东北师范大学",
+    "initial": "D",
+    "label": "东北师范大学适配教务",
+    "url": "https://bkjx.nenu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NEFU_01",
+    "name": "东北林业大学",
+    "initial": "D",
+    "label": "东北林业大学本部本科生院",
+    "url": "https://jwxt.nefu.edu.cn/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "DLU_01",
+    "name": "大连大学",
+    "initial": "D",
+    "label": "大连大学教务系统",
+    "url": "https://webvpn.dlu.edu.cn/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "DLUTCI_01",
+    "name": "大连工程学院",
+    "initial": "D",
+    "label": "大连工程学院教务系统",
+    "url": "https://jw.dlutci.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "UESTC_01",
+    "name": "电子科技大学",
+    "initial": "D",
+    "label": "电子科技大学 EAMS 教务系统",
+    "url": "https://eams.uestc.edu.cn/eams",
+    "category": "undergraduate"
+  },
+  {
+    "id": "FOSU_01",
+    "name": "佛山大学",
+    "initial": "F",
+    "label": "佛山大学强智教务系统",
+    "url": "https://100.fosu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "FVTI_01",
+    "name": "福州职业技术大学",
+    "initial": "F",
+    "label": "福州职业技术大学",
+    "url": "https://jw.webvpn.fvti.cn/Framework/lyssoNew/login.php",
+    "category": "undergraduate"
+  },
+  {
+    "id": "FJPIT_01",
+    "name": "福建信息职业技术学院",
+    "initial": "F",
+    "label": "福建信息职业技术学院",
+    "url": "https://jw.fjpit.com/#/auth/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "FJNU_01",
+    "name": "福建师范大学",
+    "initial": "F",
+    "label": "福建师范大学研究生教务系统",
+    "url": "https://gedu.fjnu.edu.cn/cas/login?service=https%3A%2F%2Fgedu.fjnu.edu.cn%2Findex",
+    "category": "postgraduate"
+  },
+  {
+    "id": "FJCPC",
+    "name": "福建船政交通职业学院",
+    "initial": "F",
+    "label": "福建船政交通职业学院教务",
+    "url": "https://webvpn.fjcpc.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDCP_01",
+    "name": "广东交通职业技术学院",
+    "initial": "G",
+    "label": "广东交通职业技术学院强智教务",
+    "url": "https://cas.gdcp.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDCP_02",
+    "name": "广东交通职业技术学院",
+    "initial": "G",
+    "label": "广东交通职业技术学院强智教务",
+    "url": "https://jw.gdcp.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDUT_01",
+    "name": "广东工业大学",
+    "initial": "G",
+    "label": "广东工业大学教务",
+    "url": "https://authserver.gdut.edu.cn/authserver/login?service=https%3A%2F%2Fjxfw.gdut.edu.cn%2Fnew%2FssoLogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GPNU_01",
+    "name": "广东技术师范大学",
+    "initial": "G",
+    "label": "广师大教务管理系统",
+    "url": "https://jwglxt.gpnu.edu.cn/sso/lyiotlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDOU_01",
+    "name": "广东海洋大学",
+    "initial": "G",
+    "label": "广东海洋大学教务",
+    "url": "https://jw.gdou.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDOU_02",
+    "name": "广东海洋大学",
+    "initial": "G",
+    "label": "广东海洋大学教务（校外通道）",
+    "url": "https://wfw.gdou.edu.cn/https://jw.gdou.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDOUYJ_02",
+    "name": "广东海洋大学",
+    "initial": "G",
+    "label": "广东海洋大学阳江校区教务（备用通道）",
+    "url": "https://jxpj.gdou.edu.cn/wx/?universitycode=10566",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDIT_01",
+    "name": "广东科学技术职业学院",
+    "initial": "G",
+    "label": "广东科学技术职业学院教务",
+    "url": "https://ids.gdit.edu.cn/authserver/login?service=https://wbdt.gdit.edu.cn/shiro-cas",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDUST",
+    "name": "广东科技学院",
+    "initial": "G",
+    "label": "广东科技学院正方教务",
+    "url": "https://webvpn.gdust.edu.cn/https/77726476706e69737468656265737421f3f652d220347d436a468ca88d1b203b/cas/?service=https%3A%2F%2Fwebvpn.gdust.edu.cn%2Flogin%3Fcas_login%3Dtrue",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDKM",
+    "name": "广东科贸职业学院",
+    "initial": "G",
+    "label": "广东科贸职业学院强智教务",
+    "url": "https://aic.gdkm.edu.cn/cas_server/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDPU_01",
+    "name": "广东药科大学",
+    "initial": "G",
+    "label": "广东药科大学正方教务",
+    "url": "https://webvpn.gdpu.edu.cn/https/77726476706e69737468656265737421f3f652d220347845300d8db9d6562d/lyuapServer/login?service=https%3A%2F%2Fjwsys.gdpu.edu.cn%2Fsso%2Flyiotlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GDIPU_01",
+    "name": "广东轻工职业技术大学",
+    "initial": "G",
+    "label": "广东轻工职业技术大学教务",
+    "url": "https://jw.gdipu.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GZHMU_01",
+    "name": "广州医科大学",
+    "initial": "G",
+    "label": "广州医科大学强智教务",
+    "url": "https://webvpn.gzhmu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HUALIXY_01",
+    "name": "广州华立学院",
+    "initial": "G",
+    "label": "广州华立学院正方教务",
+    "url": "https://jw.hualixy.edu.cn/sso/ddlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XHSYSU_01",
+    "name": "广州新华学院",
+    "initial": "G",
+    "label": "广州新华学院教务",
+    "url": "https://xhcas.xhsysu.edu.cn/lyuapServer/login?service=https%3A%2F%2Fjw.xhsysu.edu.cn%2Fsso%2Flyiotlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GZST",
+    "name": "广州松田职业学院",
+    "initial": "G",
+    "label": "广州松田职业学院教务",
+    "url": "https://jw.educationgroup.cn/gzstzyxy_jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GZIST_02",
+    "name": "广州理工学院",
+    "initial": "G",
+    "label": "广州理工学院（WebVPN 校外）",
+    "url": "https://webvpn.gzist.edu.cn/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GZIST_01",
+    "name": "广州理工学院",
+    "initial": "G",
+    "label": "广州理工学院（统一身份认证）",
+    "url": "https://ids.gzist.edu.cn/lyuapServer/login?service=http%3A%2F%2Fjw.gzist.edu.cn%2Fsso%2Flyiotlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GZMTU_01",
+    "name": "广州航海学院",
+    "initial": "G",
+    "label": "广州航海学院本科教务",
+    "url": "https://jwx.gzmtu.edu.cn/jwglxt/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GXMU_01",
+    "name": "广西医科大学",
+    "initial": "G",
+    "label": "广西医科大学智慧教务系统",
+    "url": "https://cas.gxmu.edu.cn/lyuapServer/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GXCME",
+    "name": "广西机电职业技术学院",
+    "initial": "G",
+    "label": "广西机电职业技术学院正方教务",
+    "url": "https://sso.gxcme.edu.cn/login?service=https://nportal.gxcme.edu.cn/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GXDLXY_01",
+    "name": "广西电力职业技术学院",
+    "initial": "G",
+    "label": "广西电力职业技术学院强智教务",
+    "url": "https://jw.gxdlxy.com/jsxsd/framework/xsMain.jsp",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GXSTNU_01",
+    "name": "广西科技师范学院",
+    "initial": "G",
+    "label": "广西科技师范学院强智教务",
+    "url": "https://jw.gxstnu.edu.cn/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GUIT_01",
+    "name": "桂林信息科技学院",
+    "initial": "G",
+    "label": "桂林信息科技学院",
+    "url": "https://172-16-18-132.webvpn.guit.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GLMU_01",
+    "name": "桂林医科大学",
+    "initial": "G",
+    "label": "桂林医科大学教务",
+    "url": "https://ejwc.glmu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GSMC_01",
+    "name": "甘肃医学院",
+    "initial": "G",
+    "label": "甘肃医学院正方教务",
+    "url": "https://jw.gsmc.edu.cn/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GSCMXY_01",
+    "name": "甘肃财贸职业学院",
+    "initial": "G",
+    "label": "甘肃财贸职业学院-金智教务",
+    "url": "https://jwxt.gscmxy.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GZU",
+    "name": "贵州大学",
+    "initial": "G",
+    "label": "贵州大学正方教务",
+    "url": "https://zhjw.gzu.edu.cn/jwglxt/xtgl/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GZTCME",
+    "name": "贵州机电职业技术学院",
+    "initial": "G",
+    "label": "贵州机电职业技术学院",
+    "url": "https://jwxt.gztcme.cn/jwglxt/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ECJTU_01",
+    "name": "华东交通大学",
+    "initial": "H",
+    "label": "华东交通大学教务系统",
+    "url": "https://jwxt.ecjtu.edu.cn/index.action",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HUST_01",
+    "name": "华中科技大学",
+    "initial": "H",
+    "label": "华中科技大学 HUB 系统",
+    "url": "https://mhub.hust.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HQU",
+    "name": "华侨大学",
+    "initial": "H",
+    "label": "华侨大学教务",
+    "url": "https://atrust.hqu.edu.cn/portal/?redirectid=0.6668972084789097#/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SCNU_01",
+    "name": "华南师范大学",
+    "initial": "H",
+    "label": "华南师范大学本科教务系统",
+    "url": "https://jwxt.scnu.edu.cn/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SCUT_01",
+    "name": "华南理工大学",
+    "initial": "H",
+    "label": "华南理工大学webvpn适配教务",
+    "url": "https://xsjw2018-jw.webvpn.scut.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HFNU_01",
+    "name": "合肥师范学院",
+    "initial": "H",
+    "label": "合肥师范学院树维教务",
+    "url": "https://jw.hfnu.edu.cn/eams/loginExt.action",
+    "category": "undergraduate"
+  },
+  {
+    "id": "IMNC_01",
+    "name": "呼和浩特民族学院",
+    "initial": "H",
+    "label": "通过 WebVPN 登录",
+    "url": "https://webvpn.imnc.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HRBEU_YJS",
+    "name": "哈尔滨工程大学",
+    "initial": "H",
+    "label": "哈尔滨工程大学研究生系统",
+    "url": "https://yjs.hrbeu.edu.cn/",
+    "category": "postgraduate"
+  },
+  {
+    "id": "HRBEU",
+    "name": "哈尔滨工程大学",
+    "initial": "H",
+    "label": "哈尔滨工程大学教务系统",
+    "url": "https://jwgl.hrbeu.edu.cn/jwapp/sys/emaphome/portal/index.do",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HHTC_01",
+    "name": "怀化学院",
+    "initial": "H",
+    "label": "怀化学院强智教务",
+    "url": "https://jwmis.hhtc.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HHVTC",
+    "name": "怀化职业技术学院",
+    "initial": "H",
+    "label": "怀化职业技术学院教务系统",
+    "url": "https://jwgl.hhvtc.com.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HEBEU_01",
+    "name": "河北工程大学",
+    "initial": "H",
+    "label": "河北工程大学教务系统",
+    "url": "https://jwglxxfwpt.hebeu.edu.cn/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HUEB",
+    "name": "河北经贸大学",
+    "initial": "H",
+    "label": "河北经贸大学正方教务",
+    "url": "https://202-206-194-100.vpn.hueb.edu.cn:8118/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HAUT_01",
+    "name": "河南工业大学",
+    "initial": "H",
+    "label": "河南工业大学正方教务",
+    "url": "https://jwglxt.haut.edu.cn/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HNSF_01",
+    "name": "河南师范大学",
+    "initial": "H",
+    "label": "河南师范大学适配教务",
+    "url": "https://jwc.htu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HPU_01",
+    "name": "河南理工大学",
+    "initial": "H",
+    "label": "河南理工大学教务系统",
+    "url": "https://zhjw.hpu.edu.cn/eams/login.action",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HAUST",
+    "name": "河南科技大学",
+    "initial": "H",
+    "label": "河南科技大学树维教务",
+    "url": "https://vpn.haust.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HNZY_01",
+    "name": "河南职业技术学院",
+    "initial": "H",
+    "label": "河南职业技术学院课表",
+    "url": "https://one.hnzj.edu.cn/common-service/kcb-pc/personage/personage",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HUEL_01",
+    "name": "河南财经政法大学",
+    "initial": "H",
+    "label": "河南财经政法大学",
+    "url": "https://xk.huel.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HBLGXY_01",
+    "name": "淮北理工学院",
+    "initial": "H",
+    "label": "淮北理工学院强智适配",
+    "url": "https://a.hblgxy.edu.cn:5111/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HNNU_01",
+    "name": "淮南师范学院",
+    "initial": "H",
+    "label": "淮南师范学院库表图门户",
+    "url": "https://xxmh.hnnu.edu.cn/zhxy/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HBMU_01",
+    "name": "湖北医药学院",
+    "initial": "H",
+    "label": "湖北医药学院教务",
+    "url": "https://jw.hbmu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HBUAS_01",
+    "name": "湖北文理学院",
+    "initial": "H",
+    "label": "湖北文理学院超星教务适配",
+    "url": "https://hbuas.jw.chaoxing.com/admin/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HBMZU",
+    "name": "湖北民族大学",
+    "initial": "H",
+    "label": "湖北民族大学教务系统",
+    "url": "https://jwgl.hbmzu.edu.cn/edu/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HUAT",
+    "name": "湖北汽车工业学院",
+    "initial": "H",
+    "label": "湖北汽车工业学院",
+    "url": "https://cas.huat.edu.cn/authserver/login?service=http%3A%2F%2Fneweas.huat.edu.cn%2Flogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SANYEDU",
+    "name": "湖南三一工业职业技术学院",
+    "initial": "H",
+    "label": "湖南三一工业职业技术学院教务系统",
+    "url": "https://ehall.sanyedu.com/new/index.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HNIU_01",
+    "name": "湖南信息职业技术学院",
+    "initial": "H",
+    "label": "湖南信息职业技术学院强智适配",
+    "url": "https://authserver.hniu.cn/authserver/login?service=https%3A%2F%2Fehall.hniu.cn%3A443%2Flogin%3Fservice%3Dhttps%3A%2F%2Fehall.hniu.cn%2Fnew%2Findex.html%3Fbrowser%3Dno%25EF%25BC%2589#StudentAffairsA",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HUNAU_01",
+    "name": "湖南农业大学",
+    "initial": "H",
+    "label": "湖南农业大学（强智教务）",
+    "url": "https://webvpn.hunau.edu.cn/login?cas_login=true",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HNU_01",
+    "name": "湖南大学",
+    "initial": "H",
+    "label": "湖南大学强智教务",
+    "url": "https://hdjw.hnu.edu.cn/jsxsd/sso.jsp",
+    "category": "undergraduate"
+  },
+  {
+    "id": "hnie_01",
+    "name": "湖南工程学院",
+    "initial": "H",
+    "label": "湖南工程学院",
+    "url": "https://jwcmis.hnie.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HUNNU",
+    "name": "湖南师范大学",
+    "initial": "H",
+    "label": "湖南师范大学教务",
+    "url": "https://jwglnew.hunnu.edu.cn/eams/courseTableForStd.action",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HNUST_01",
+    "name": "湖南科技大学",
+    "initial": "H",
+    "label": "湖南科技大学适配教务",
+    "url": "https://kdjw.hnust.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HZU",
+    "name": "菏泽学院",
+    "initial": "H",
+    "label": "菏泽学院强智教务",
+    "url": "https://222.206.176.102/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HYNU_01",
+    "name": "衡阳师范学院",
+    "initial": "H",
+    "label": "衡阳师范学院强智适配",
+    "url": "https://hysfjw.hynu.edu.cn/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "HLJU",
+    "name": "黑龙江大学",
+    "initial": "H",
+    "label": "黑龙江大学研究生教育综合管理系统",
+    "url": "https://yjsglxt.hlju.edu.cn/",
+    "category": "postgraduate"
+  },
+  {
+    "id": "GUC",
+    "name": "吉利学院",
+    "initial": "J",
+    "label": "吉利学院",
+    "url": "https://jw.guc.edu.cn/yethan/UserAction?setAction=userLogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JLU_01",
+    "name": "吉林大学",
+    "initial": "J",
+    "label": "吉林大学（新）教务管理系统",
+    "url": "https://iedu.jlu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JLU_02",
+    "name": "吉林大学",
+    "initial": "J",
+    "label": "吉林大学（新）教务管理系统 (WebVPN)",
+    "url": "https://vpn.jlu.edu.cn/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JDZVUA",
+    "name": "景德镇艺术职业大学",
+    "initial": "J",
+    "label": "景德镇艺术职业大学教务系统",
+    "url": "https://jwc.jdzvua.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JNU_01",
+    "name": "暨南大学",
+    "initial": "J",
+    "label": "暨南大学金智教务系统",
+    "url": "https://jw.jnu.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "UJS_01",
+    "name": "江苏大学",
+    "initial": "J",
+    "label": "江苏大学教务系统",
+    "url": "https://jwxt.ujs.edu.cn/sso/jziotlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JSNU_01",
+    "name": "江苏师范大学",
+    "initial": "J",
+    "label": "江苏师范大学适配教务",
+    "url": "https://i.jsnu.edu.cn/home",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JSTC_01",
+    "name": "江苏旅游职业学院",
+    "initial": "J",
+    "label": "江苏旅游职业学院教务",
+    "url": "https://authserver.jstc.edu.cn/authserver/login?service=https%3A%2F%2Fjwxt.jstc.edu.cn%2Fstudent%2Fsso%2Flogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JSEI_01",
+    "name": "江苏电子信息职业学院",
+    "initial": "J",
+    "label": "江苏电子信息职业学院（webvpn）",
+    "url": "https://webvpn.jsei.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JSEI_02",
+    "name": "江苏电子信息职业学院",
+    "initial": "J",
+    "label": "江苏电子信息职业学院（校园网）",
+    "url": "https://ehall.jsei.edu.cn/new/index.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JUST",
+    "name": "江苏科技大学",
+    "initial": "J",
+    "label": "江苏科技大学正方教务",
+    "url": "https://my.just.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JXNU",
+    "name": "江西师范大学",
+    "initial": "J",
+    "label": "江西师大教务系统",
+    "url": "https://jwc.jxnu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JXUST",
+    "name": "江西理工大学",
+    "initial": "J",
+    "label": "江西理工大学强智教务",
+    "url": "https://authserver.jxust.edu.cn/authserver/login?service=https://jw.jxust.edu.cn/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JHZYEDU_01",
+    "name": "江西航空职业技术学院",
+    "initial": "J",
+    "label": "正方教务-江西航空职业技术学院",
+    "url": "https://jw.jhzyedu.cn/xtgl/login_slogin.html?ydType=0",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JXFU_01",
+    "name": "江西飞行学院",
+    "initial": "J",
+    "label": "江西飞行学院适配教务",
+    "url": "https://jwxt.jxfu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "UJN_01",
+    "name": "济南大学",
+    "initial": "J",
+    "label": "济南大学教务系统",
+    "url": "https://sso.ujn.edu.cn/tpass/login?service=http%3A%2F%2Fjwgl.ujn.edu.cn%2Fsso%2Fdriotlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JNGCXY_01",
+    "name": "济南工程职业技术学院",
+    "initial": "J",
+    "label": "济南工程职业技术学院正方教务",
+    "url": "https://uap.jngcxy.edu.cn/lyuapServer/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "JYVTC_01",
+    "name": "济源职业技术学院",
+    "initial": "J",
+    "label": "济源职业技术学院教务系统",
+    "url": "https://jwgl.jyvtc.edu.cn/jyvtcjw/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "KSU_01",
+    "name": "喀什大学",
+    "initial": "K",
+    "label": "喀什大学正方教务",
+    "url": "https://cas.ksu.edu.cn/cas/login?service=https://jwnet.ksu.edu.cn/sso/ddlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "LYU",
+    "name": "临沂大学",
+    "initial": "L",
+    "label": "临沂大学正方教务",
+    "url": "https://sdp.lyu.edu.cn/https/webvpn3146b55e2aeee09087ebc4ebe6dbd770/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "LUT",
+    "name": "兰州理工大学",
+    "initial": "L",
+    "label": "兰州理工大学教务系统",
+    "url": "https://jwxt.lut.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "LIT_01",
+    "name": "洛阳理工学院",
+    "initial": "L",
+    "label": "洛阳理工学院乘方教务",
+    "url": "https://lljw.lit.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "LCUDCC",
+    "name": "聊城大学东昌学院",
+    "initial": "L",
+    "label": "聊城大学东昌学院正方教务",
+    "url": "https://jw.lcudcc.edu.cn/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "USTL",
+    "name": "辽宁科技大学",
+    "initial": "L",
+    "label": "辽宁科技大学综合教务管理系统",
+    "url": "https://ustl.jw.chaoxing.com/admin/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "MMPT",
+    "name": "茂名职业技术学院",
+    "initial": "M",
+    "label": "茂名职业技术学院课表",
+    "url": "https://jwc.mmpt.edu.cn/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "MKU_01",
+    "name": "闽南科技学院",
+    "initial": "M",
+    "label": "闽南科技学院教务系统",
+    "url": "https://jwgl.mku.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "MASU_01",
+    "name": "马鞍山学院",
+    "initial": "M",
+    "label": "马鞍山学院教务系统",
+    "url": "https://jwxt.masu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "IMU_01",
+    "name": "内蒙古大学",
+    "initial": "N",
+    "label": "内蒙古大学URP教务",
+    "url": "https://jwxt.imu.edu.cn/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NJUCM",
+    "name": "南京中医药大学",
+    "initial": "N",
+    "label": "南京中医药大学教务系统",
+    "url": "https://jwgl.njucm.edu.cn/student/home",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NUIST_01",
+    "name": "南京信息工程大学",
+    "initial": "N",
+    "label": "南京信息工程大学教务课表",
+    "url": "https://jwxt.nuist.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NJCIT",
+    "name": "南京信息职业技术学院",
+    "initial": "N",
+    "label": "南京信息职业技术学院",
+    "url": "https://jw.njcit.cn/sso/lyiotlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NJTECH",
+    "name": "南京工业大学",
+    "initial": "N",
+    "label": "南京工业大学正方教务",
+    "url": "https://jwgl.njtech.edu.cn/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NIIT",
+    "name": "南京工业职业技术大学",
+    "initial": "N",
+    "label": "南京工业职业技术大学教务",
+    "url": "https://jwxt.niit.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NJNU",
+    "name": "南京师范大学",
+    "initial": "N",
+    "label": "南京师范大学金智教务",
+    "url": "https://authserver.nnu.edu.cn/authserver/login?service=https://hsnnu.nnu.edu.cn/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NJFU_01",
+    "name": "南京林业大学",
+    "initial": "N",
+    "label": "南京林业大学",
+    "url": "https://jwxt.njfu.edu.cn/sso.jsp",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NUAA_01",
+    "name": "南京航空航天大学",
+    "initial": "N",
+    "label": "南京航空航天大学树维教务",
+    "url": "https://aao-eas.nuaa.edu.cn/eams/login.action",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NJUPT_01",
+    "name": "南京邮电大学",
+    "initial": "N",
+    "label": "南京邮电大学正方教务",
+    "url": "https://i.njupt.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NANKAI",
+    "name": "南开大学",
+    "initial": "N",
+    "label": "南开大学研究生教育综合管理系统",
+    "url": "https://yjs.nankai.edu.cn/py/page/student/grkcb.htm",
+    "category": "postgraduate"
+  },
+  {
+    "id": "SMU",
+    "name": "南方医科大学",
+    "initial": "N",
+    "label": "南方医科大学乘方教务",
+    "url": "https://zhjw.smu.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SUSTECH",
+    "name": "南方科技大学",
+    "initial": "N",
+    "label": "南方科技大学教学管理与服务平台",
+    "url": "https://cas.sustech.edu.cn/cas/login?service=https%3A%2F%2Ftis.sustech.edu.cn%2Fcas",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NTU",
+    "name": "南通大学",
+    "initial": "N",
+    "label": "南通大学正方教务",
+    "url": "https://tdjw.ntu.edu.cn/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NYNU_01",
+    "name": "南阳师范学院",
+    "initial": "N",
+    "label": "南阳师范学院教务系统",
+    "url": "https://vpn.nynu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "QVTU",
+    "name": "泉州职业技术大学",
+    "initial": "Q",
+    "label": "泉州职业技术大学强智教务",
+    "url": "https://jw.qvtu.edu.cn/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "QDU_01",
+    "name": "青岛大学",
+    "initial": "Q",
+    "label": "青岛大学强智教务",
+    "url": "https://xjw.qdu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "QUT",
+    "name": "青岛理工大学",
+    "initial": "Q",
+    "label": "青岛理工大学教务",
+    "url": "https://jxgl.qut.edu.cn/jwglxt/xtgl/index_initMenu.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "QDHHC",
+    "name": "青岛黄海学院",
+    "initial": "Q",
+    "label": "青岛黄海学院正方教务",
+    "url": "https://jwxt.qdhhc.edu.cn/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "QQHRU",
+    "name": "齐齐哈尔大学",
+    "initial": "Q",
+    "label": "齐齐哈尔大学URP教务",
+    "url": "https://webvpn.qqhru.edu.cn/users/sign_in",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SMXY",
+    "name": "三明学院",
+    "initial": "S",
+    "label": "三明学院正方教务",
+    "url": "https://one.fjsmu.edu.cn/tp_up/view?m=up",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SHZQ_01",
+    "name": "上海中侨职业技术大学",
+    "initial": "S",
+    "label": "上海中侨职业技术大学教务系统",
+    "url": "https://cas.shzq.edu.cn/cas/login?service=https://jw.shzq.edu.cn/sso/ddlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SHNU_01",
+    "name": "上海师范大学",
+    "initial": "S",
+    "label": "上海师范大学树维教务",
+    "url": "https://course.shnu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SHIEP_01",
+    "name": "上海电力大学",
+    "initial": "S",
+    "label": "上海电力大学本科教务系统",
+    "url": "https://jw.shiep.edu.cn/eams/index.action",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SHUFEZJ",
+    "name": "上海财经大学浙江学院",
+    "initial": "S",
+    "label": "上海财经大学浙江学院正方教务",
+    "url": "https://jwxt.shufe-zj.edu.cn/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SCTBC_01",
+    "name": "四川工商职业技术学院",
+    "initial": "S",
+    "label": "四川工商职业技术学院教务系统",
+    "url": "https://jw.sctbc.edu.cn/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SDJTU",
+    "name": "山东交通学院",
+    "initial": "S",
+    "label": "山东交通学院教务",
+    "url": "https://wwebvpn.sdjtu.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SDWCVC_01",
+    "name": "山东水利职业学院",
+    "initial": "S",
+    "label": "山东水利职业学院树维教务",
+    "url": "https://sso.sdwcvc.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SDIPCT",
+    "name": "山东石油化工学院",
+    "initial": "S",
+    "label": "山东石油化工学院教务",
+    "url": "https://webvpn.sdipct.edu.cn/https/77726476706e69737468656265737421fae0598869236c596e0b9de29d51367bd943/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SDDFVC",
+    "name": "山东药品食品职业学院",
+    "initial": "S",
+    "label": "山东药品食品职业学院教务",
+    "url": "https://cas.sddfvc.edu.cn/login?type=usernamepassword&service=http%3A%2F%2Ffazhan.sddfvc.edu.cn%2Fjs%2Ffzzx%2Flogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "YSSDUFE_01",
+    "name": "山东财经大学燕山学院",
+    "initial": "S",
+    "label": "山东财经大学燕山学院强智教务",
+    "url": "https://ysjw.sdufe.edu.cn:8081/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SDLIVC",
+    "name": "山东轻工职业学院",
+    "initial": "S",
+    "label": "山东轻工职业学院教务",
+    "url": "https://crp.sdlivc.cn/xsgl/xs/login/login.aspx",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SXGCXY_01",
+    "name": "山西工程职业学院",
+    "initial": "S",
+    "label": "山西工程职业学院超星教务适配",
+    "url": "https://sxevc.jw.chaoxing.com/admin/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SXDZKJ",
+    "name": "山西电子科技学院",
+    "initial": "S",
+    "label": "山西电子科技学院青果教务",
+    "url": "https://sso.sxdzkj.edu.cn/sso-auth/#/login?service=https://jwxt.sxdzkj.edu.cn/caslogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SHXY",
+    "name": "绥化学院",
+    "initial": "S",
+    "label": "绥化学院乘方教务",
+    "url": "https://jwgl.shxy.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "TONGJI_01",
+    "name": "同济大学",
+    "initial": "T",
+    "label": "同济大学 1 系统",
+    "url": "https://1.tongji.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "TARU_01",
+    "name": "塔里木大学",
+    "initial": "T",
+    "label": "塔里木大学正方教务",
+    "url": "https://auth.taru.edu.cn/cas/login?service=https%3A%2F%2Fhall.taru.edu.cn%2FserviceHall",
+    "category": "undergraduate"
+  },
+  {
+    "id": "TCU_01",
+    "name": "天津城建大学",
+    "initial": "T",
+    "label": "天津城建大学URP教务",
+    "url": "https://authserver.tcu.edu.cn/authserver/login?service=https%3A%2F%2Fjwxs.tcu.edu.cn%2Flogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "TUST_01",
+    "name": "天津科技大学",
+    "initial": "T",
+    "label": "天津科技大学URP教务",
+    "url": "https://id.tust.edu.cn/authserver/login?service=http://jwxtxs.tust.edu.cn:46110/j_spring_cas_security_check",
+    "category": "undergraduate"
+  },
+  {
+    "id": "TSU_01",
+    "name": "泰山学院",
+    "initial": "T",
+    "label": "泰山学院青果教务",
+    "url": "https://jwxt.tsu.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GZTRC_OLD",
+    "name": "铜仁学院",
+    "initial": "T",
+    "label": "铜仁学院移动教务（旧版教务）",
+    "url": "https://gztrc.edu.cn:17230/yjw/pages/login/login.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "GZTRC",
+    "name": "铜仁学院",
+    "initial": "T",
+    "label": "铜仁学院联奕教务（新版教务）",
+    "url": "https://gztrc.edu.cn:17232/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "WENHUA_01",
+    "name": "文华学院",
+    "initial": "W",
+    "label": "文华学院正方教务",
+    "url": "https://jw1.hustwenhua.net/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CWXU_01",
+    "name": "无锡学院",
+    "initial": "W",
+    "label": "无锡学院教务系统",
+    "url": "https://jwgl.cwxu.edu.cn/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "WBU_03",
+    "name": "武汉商学院",
+    "initial": "W",
+    "label": "武汉商学院-WebVPN访问",
+    "url": "https://webvpn.wbu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "WBU_02",
+    "name": "武汉商学院",
+    "initial": "W",
+    "label": "武汉商学院-校园网访问",
+    "url": "https://jwxt.wbu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "WHUT_01",
+    "name": "武汉理工大学",
+    "initial": "W",
+    "label": "武汉理工大学金智教务",
+    "url": "https://jwxt.whut.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "WUST_01",
+    "name": "武汉科技大学",
+    "initial": "W",
+    "label": "武汉科技大学教务系统",
+    "url": "https://bkjx.wust.edu.cn/jsxsd/framework/xsMain.jsp",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XYAFU_01",
+    "name": "信阳农林学院",
+    "initial": "X",
+    "label": "信阳农林学院青果教务",
+    "url": "https://sso.xyafu.edu.cn/sso/login?service=https%3A%2F%2Fjwgl.xyafu.edu.cn%2Fcaslogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XMCU_01",
+    "name": "厦门城市职业学院",
+    "initial": "X",
+    "label": "厦门城市职业学院青果教务",
+    "url": "https://eone-443.webvpn.xmcu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XHKJZYXY_01",
+    "name": "宣化科技职业学院",
+    "initial": "X",
+    "label": "宣化科技职业学院正方适配",
+    "url": "https://xhkjzyxy.edu.cn:18088/cas/login?service=https%3A%2F%2Fxhkjzyxy.edu.cn%3A8387%2Fsso%2Fjziotlogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XZHMU_01",
+    "name": "徐州医科大学",
+    "initial": "X",
+    "label": "徐州医科大学研究生教务",
+    "url": "https://authserver.xzhmu.edu.cn/authserver/login?service=https%3A%2F%2Fehall.xzhmu.edu.cn%2Flogin",
+    "category": "postgraduate"
+  },
+  {
+    "id": "XJIE_01",
+    "name": "新疆工程学院",
+    "initial": "X",
+    "label": "新疆工程学院强智适配",
+    "url": "https://authserver.xjie.edu.cn/authserver/login?service=https%3A%2F%2Fjwxt.xjie.edu.cn%2Fjsxsd%2F",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XJZFU_01",
+    "name": "新疆政法学院",
+    "initial": "X",
+    "label": "新疆政法学院新教务系统",
+    "url": "https://jwxt.xjzfu.edu.cn/jwapp/sys/homeapp/home/index.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NWAFU_01",
+    "name": "西北农林科技大学",
+    "initial": "X",
+    "label": "西北农林科技大学",
+    "url": "https://newehall.nwafu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "NWPU_01",
+    "name": "西北工业大学",
+    "initial": "X",
+    "label": "西北工业大学",
+    "url": "https://ecampus.nwpu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SWJTU_01",
+    "name": "西南交通大学",
+    "initial": "X",
+    "label": "西南交通大学扬华学堂",
+    "url": "https://yhxt.swjtu.edu.cn/study/teach/course/stu-course-list",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SWU_01",
+    "name": "西南大学",
+    "initial": "X",
+    "label": "西南大学教务",
+    "url": "https://i.swu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SWFU",
+    "name": "西南林业大学",
+    "initial": "X",
+    "label": "西南林业大学教务系统",
+    "url": "https://jw.swfu.edu.cn/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XJTU_01",
+    "name": "西安交通大学",
+    "initial": "X",
+    "label": "西安交通大学-本科教务",
+    "url": "https://ehall.xjtu.edu.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XAUAT_01",
+    "name": "西安建筑科技大学",
+    "initial": "X",
+    "label": "西安建筑科技大学",
+    "url": "https://swjw.xauat.edu.cn/student/login/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XAUT_01",
+    "name": "西安理工大学",
+    "initial": "X",
+    "label": "西安理工大学适配教务",
+    "url": "https://jwgl.xaut.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XSYU_01",
+    "name": "西安石油大学",
+    "initial": "X",
+    "label": "西安石油大学超星教务",
+    "url": "https://jiaowu.xsyu.edu.cn/admin/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "XCU_01",
+    "name": "许昌学院",
+    "initial": "X",
+    "label": "许昌学院",
+    "url": "https://jwglxt.xcu.edu.cn/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "YNUFE_01",
+    "name": "云南财经大学",
+    "initial": "Y",
+    "label": "云南财经大学本科教务系统",
+    "url": "https://xjwis.ynufe.edu.cn/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "YIBINU_01",
+    "name": "宜宾学院",
+    "initial": "Y",
+    "label": "宜宾学院教务系统适配",
+    "url": "https://authserver.yibinu.edu.cn/authserver/login?service=https://ehall.yibinu.edu.cn:443/login?service=https://ehall.yibinu.edu.cn/new/index.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "YZU_01",
+    "name": "扬州大学",
+    "initial": "Y",
+    "label": "扬州大学URP教务",
+    "url": "https://webvpn.yzu.edu.cn/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "YSU_YJS",
+    "name": "燕山大学",
+    "initial": "Y",
+    "label": "燕山大学研究生管理系统",
+    "url": "https://cer.ysu.edu.cn/authserver/login?service=https%3A%2F%2Fyjsxt.ysu.edu.cn%2Fapi%2FcasLogin%2Fysu",
+    "category": "postgraduate"
+  },
+  {
+    "id": "CSU_01",
+    "name": "中南大学",
+    "initial": "Z",
+    "label": "中南大学（强智教务）",
+    "url": "https://ca.csu.edu.cn/authserver/login?service=http%3A%2F%2Fcsujwc.its.csu.edu.cn%2Fsso.jsp",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CSUFT_QZ_01",
+    "name": "中南林业科技大学",
+    "initial": "Z",
+    "label": "中南林业科技大学（强智教务）",
+    "url": "https://webvpn.csuft.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SCUEC",
+    "name": "中南民族大学",
+    "initial": "Z",
+    "label": "中南民族大学教务系统",
+    "url": "https://webvpn.scuec.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CUG_02",
+    "name": "中国地质大学(武汉)",
+    "initial": "Z",
+    "label": "中国地质大学（武汉）研究生教务",
+    "url": "https://epo.cug.edu.cn",
+    "category": "postgraduate"
+  },
+  {
+    "id": "CUG_01",
+    "name": "中国地质大学(武汉)",
+    "initial": "Z",
+    "label": "中国地质大学（武汉）正方教务",
+    "url": "https://sfrz.cug.edu.cn/authserver/login?service=https%3A%2F%2Fi.cug.edu.cn%2Fweb%2F%3FCASLOGIN%3DCASLOGIN",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CAUC",
+    "name": "中国民航大学",
+    "initial": "Z",
+    "label": "中国民航大学正方教务",
+    "url": "https://http-jwgl-cauc-edu-cn-80.webvpn.cauc.edu.cn/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "OUC_01",
+    "name": "中国海洋大学",
+    "initial": "Z",
+    "label": "中国海洋大学本科教务系统",
+    "url": "https://id.ouc.edu.cn/sso/login?service=https%3A%2F%2Fjwgl2024.ouc.edu.cn%2F",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CUP_02",
+    "name": "中国石油大学(北京)",
+    "initial": "Z",
+    "label": "中国石油大学(北京)研究生教务系统",
+    "url": "https://gmis.cup.edu.cn/gmis/student/default/index",
+    "category": "postgraduate"
+  },
+  {
+    "id": "CUP_01",
+    "name": "中国石油大学(北京)",
+    "initial": "Z",
+    "label": "中国石油大学(北京)本科教务系统",
+    "url": "https://bk.cup.edu.cn/student/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "UPC_GRAD",
+    "name": "中国石油大学(华东)",
+    "initial": "Z",
+    "label": "中国石油大学(华东)研究生综合管理系统",
+    "url": "https://degrees.upc.edu.cn/",
+    "category": "postgraduate"
+  },
+  {
+    "id": "UPC",
+    "name": "中国石油大学(华东)",
+    "initial": "Z",
+    "label": "中国石油大学(华东)教务适配",
+    "url": "https://webvpn.upc.edu.cn/users/sign_in",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CUPK_01",
+    "name": "中国石油大学（北京）克拉玛依校区",
+    "initial": "Z",
+    "label": "中国石油大学(北京)克拉玛依校区本科教务系统",
+    "url": "https://eams.cupk.edu.cn/student/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "USTC_01",
+    "name": "中国科学技术大学",
+    "initial": "Z",
+    "label": "中国科学技术大学研究生教务",
+    "url": "https://yjs1.ustc.edu.cn/gsapp/sys/yjsrzfwapp/dbLogin/main.do",
+    "category": "postgraduate"
+  },
+  {
+    "id": "USTC",
+    "name": "中国科学技术大学",
+    "initial": "Z",
+    "label": "中国科学技术大学本科教务",
+    "url": "https://id.ustc.edu.cn/cas/login?service=https%3A%2F%2Fjw.ustc.edu.cn%2Fucas-sso%2Flogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "CJLU",
+    "name": "中国计量大学",
+    "initial": "Z",
+    "label": "中国计量大学（正方教务）",
+    "url": "https://jwxt.cjlu.edu.cn/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "SYSU_01",
+    "name": "中山大学",
+    "initial": "Z",
+    "label": "中山大学研究生教务课表导入",
+    "url": "https://cms.sysu.edu.cn/",
+    "category": "postgraduate"
+  },
+  {
+    "id": "SYSU",
+    "name": "中山大学",
+    "initial": "Z",
+    "label": "中山大学",
+    "url": "https://jwxt.sysu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZHKU_00",
+    "name": "仲恺农业工程学院",
+    "initial": "Z",
+    "label": "强智教务 - 学期理论课表",
+    "url": "https://edu-admin.zhku.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "UZZ_01",
+    "name": "枣庄学院",
+    "initial": "Z",
+    "label": "枣庄学院正方教务",
+    "url": "https://iam.uzz.edu.cn/esc-sso/login/page",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZWU_01",
+    "name": "浙江万里学院",
+    "initial": "Z",
+    "label": "浙江万里学院正方教务",
+    "url": "https://ehall.zwu.edu.cn/_layouts/15/ZWUWSBS/BSDT/HomePage.aspx#",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZCMU",
+    "name": "浙江中医药大学",
+    "initial": "Z",
+    "label": "浙江中医药大学正方教务",
+    "url": "https://jwmk.zcmu.edu.cn/jwglxt/xtgl/login_slogin.html",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZJBTI_01",
+    "name": "浙江工商职业技术学院",
+    "initial": "Z",
+    "label": "浙江工商职业技术学院教务管理",
+    "url": "https://webvpn.zjbti.net.cn",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZJSRU_01",
+    "name": "浙江树人学院",
+    "initial": "Z",
+    "label": "浙江树人学院正方教务",
+    "url": "https://xk.jwc.zjsru.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZUST_01",
+    "name": "浙江科技大学",
+    "initial": "Z",
+    "label": "浙江科技大学（正方教务）",
+    "url": "https://https-authserver-zust-edu-cn-443.webvpn.zust.edu.cn/authserver/login?appid=https://https-authserver-zust-edu-cn-443.webvpn.zust.edu.cn/authserver/logout?service=${redirect_url}&service=https://webvpn.zust.edu.cn/callback/cas/TKBCDGsz",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZSC_01",
+    "name": "电子科技大学中山学院",
+    "initial": "Z",
+    "label": "电子科技大学中山学院强智教务系统",
+    "url": "https://jwgln.zsc.edu.cn/jsxsd/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZQU_01",
+    "name": "肇庆学院",
+    "initial": "Z",
+    "label": "肇庆学院",
+    "url": "https://jwgl.zqu.edu.cn/",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZZU_01",
+    "name": "郑州大学",
+    "initial": "Z",
+    "label": "郑州大学",
+    "url": "https://cas.s.zzu.edu.cn/cas/a/login?service=https%3A%2F%2Fjwxt.zzu.edu.cn%2Fstudent%2Fsso%2Flogin",
+    "category": "undergraduate"
+  },
+  {
+    "id": "zzvcae_01",
+    "name": "郑州汽车工程职业学院",
+    "initial": "Z",
+    "label": "郑州汽车工程职业学院",
+    "url": "https://cas.zzvcae.edu.cn/cas/login",
+    "category": "undergraduate"
+  },
+  {
+    "id": "ZUA_01",
+    "name": "郑州航空工业管理学院",
+    "initial": "Z",
+    "label": "郑州航空工业管理学院教务系统",
+    "url": "https://jwglxt.zua.edu.cn/eams/loginExt.action",
+    "category": "undergraduate"
+  }
+]

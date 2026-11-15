@@ -14,6 +14,26 @@ data class AppSettings(
     val showWeekend: Boolean = true,
     val fontScale: Float = 1f,
     val rowHeight: Int = 64,
+    val startupPage: Int = 0,
+    val autoBackupEnabled: Boolean = true,
+    val autoBackupKeep: Int = 5,
+    val courseFontScale: Float = 1f,
+    val courseCornerRadius: Int = 10,
+    val courseOpacity: Float = 1f,
+    val showGridLines: Boolean = true,
+    val showSectionTime: Boolean = true,
+    val showDates: Boolean = true,
+    val showTeacher: Boolean = true,
+    val showLocation: Boolean = true,
+    val centerCourseText: Boolean = false,
+    val timeColumnWidth: Int = 44,
+    val dayHeaderHeight: Int = 50,
+    val courseOuterPadding: Int = 2,
+    val courseInnerPadding: Int = 4,
+    val centerCourseVertically: Boolean = false,
+    val boldCourseNames: Boolean = true,
+    val showCourseBorders: Boolean = true,
+    val showCourseStartTime: Boolean = false,
     val reminders: Boolean = false,
     val leadMinutes: Int = 10,
     val showNonCurrentWeek: Boolean = false,
@@ -79,7 +99,8 @@ object BackupCodec {
             s.terms.size <= 100 &&
                 s.timetables.size in 1..100 &&
                 s.courses.size <= 3000 &&
-                s.exceptions.size <= 10000
+                s.exceptions.size <= 10000 &&
+                s.calendarRules.size <= 2000
         ) {
             "备份数据过多"
         }
@@ -142,15 +163,36 @@ object BackupCodec {
                 require(m.teacher.length <= 200 && m.location.length <= 200) { "时段字段过长" }
             }
         }
+        ids(s.calendarRules.map { it.id })
+        val ruleDates = mutableSetOf<Pair<String, String>>()
+        s.calendarRules.forEach { rule ->
+            val term = s.terms.firstOrNull { it.id == rule.termId } ?: error("调休所属课表不存在")
+            val date = LocalDate.parse(rule.date)
+            require(ScheduleEngine.week(term, date) in 1..term.weeks && rule.name.length <= 80) {
+                "调休日期超出学期或名称过长"
+            }
+            require(ruleDates.add(rule.termId to rule.date)) { "同一天的调休重复" }
+            if (rule.teachingDate.isNotBlank()) {
+                val source = LocalDate.parse(rule.teachingDate)
+                require(source != date && ScheduleEngine.week(term, source) in 1..term.weeks) {
+                    "来源日期无效或超出学期"
+                }
+            }
+        }
         val sourceKeys = mutableSetOf<String>()
         s.exceptions.forEach { x ->
             val c = s.courses.find { it.id == x.courseId } ?: error("单次调整的课程不存在")
             val m = c.meetings.find { it.id == x.meetingId } ?: error("单次调整的时段不存在")
             val t = s.terms.first { it.id == c.termId }
             val count = s.timetables.first { it.id == t.timetableId }.periods.size
+            require(x.originalDate.isNotBlank() || x.originalTeachingDate.isBlank()) {
+                "补课不应包含原教学日期"
+            }
             require(x.originalDate.isNotBlank() || x.targetDate.isNotBlank()) { "单次调整缺少日期" }
             if (x.originalDate.isNotBlank()) {
-                val d = LocalDate.parse(x.originalDate)
+                val actual = LocalDate.parse(x.originalDate)
+                require(ScheduleEngine.week(t, actual) in 1..t.weeks) { "单次调整日期超出学期" }
+                val d = LocalDate.parse(x.originalTeachingDate.ifBlank { x.originalDate })
                 require(d.dayOfWeek.value == m.weekday && ScheduleEngine.week(t, d) in m.weeks) {
                     "单次调整来源不属于该课程"
                 }
@@ -170,7 +212,18 @@ object BackupCodec {
             p.theme in listOf("system", "light", "dark") &&
                 p.palette in listOf("jade", "iris", "ocean", "rose", "amber", "slate") &&
                 p.fontScale in 0.85f..1.5f &&
-                p.rowHeight in 48..110 &&
+                p.rowHeight in 48..180 &&
+                p.startupPage in 0..2 &&
+                p.courseFontScale.isFinite() &&
+                p.courseFontScale in .75f..1.5f &&
+                p.timeColumnWidth in 32..72 &&
+                p.dayHeaderHeight in 36..80 &&
+                p.courseOuterPadding in 0..6 &&
+                p.courseInnerPadding in 0..12 &&
+                p.courseCornerRadius in 0..24 &&
+                p.courseOpacity.isFinite() &&
+                p.courseOpacity in .3f..1f &&
+                p.autoBackupKeep in listOf(3, 5, 10) &&
                 p.leadMinutes in 0..120
         ) {
             "设置参数无效"

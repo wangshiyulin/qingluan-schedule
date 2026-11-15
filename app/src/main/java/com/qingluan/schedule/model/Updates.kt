@@ -12,7 +12,8 @@ fun Snapshot.withCourse(course: Course): Snapshot {
             meeting != null &&
                 (x.originalDate.isBlank() ||
                     runCatching {
-                            val date = LocalDate.parse(x.originalDate)
+                            val date =
+                                LocalDate.parse(x.originalTeachingDate.ifBlank { x.originalDate })
                             date.dayOfWeek.value == meeting.weekday &&
                                 ScheduleEngine.week(term, date) in meeting.weeks
                         }

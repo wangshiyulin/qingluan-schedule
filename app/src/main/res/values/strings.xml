@@ -1,1 +1,4 @@
-<resources><string name="app_name">青鸾课程表</string></resources>
+<resources>
+    <string name="app_name">青鸾课程表</string>
+    <string name="import_timetable">导入课程表</string>
+</resources>

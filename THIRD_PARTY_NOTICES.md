@@ -29,3 +29,5 @@ ZXing core 3.5.4：Copyright ZXing authors，Apache License 2.0。用于课表�
 导入字段结构参考：拾光扩展仓库的正方适配（MIT，Copyright (c) 2025 星河欲转），https://github.com/ShiGuangSchedule/shiguang_warehouse/blob/main/resources/zhengfang_jiaowu/zhengfang_01.js ；小爱课程表公开正方 DOM 解析示例 https://github.com/kqakqakqa/xiaoai-schedule-parser 。只参考网页字段结构，未复制其脚本；本地解析使用独立 Kotlin 实现。
 
 导入架构与字段模型参考 WakeUp Kotlin 历史公开镜像：https://github.com/tKM9WsmQUaUgNttn3DGUsHkxG8/WakeupSchedule_Kotlin 。仅参考课程基础信息与上课时段分离、按课表和课程编号关联，以及正方网页字段位置；未复制其源码或资源。新增 AndroidX WebKit 1.18.0 用于文档开始时读取课表数据，Apache-2.0。
+
+学校名称与 HTTPS 教务入口数据复用自拾光适配仓库（MIT，Copyright (c) 2025 星河欲转）：https://github.com/ShiGuangSchedule/shiguang_warehouse 。完整许可见 app/src/main/assets/licenses/shiguang-school-MIT.txt；只内置入口元数据，不下载或执行远程适配脚本。南京中医药大学入口依据用户截图及公开网址校验补充。

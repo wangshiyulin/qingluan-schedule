@@ -316,6 +316,7 @@ fun InfoCard(
     icon: @Composable () -> Unit,
     onClick: () -> Unit,
     trailing: @Composable (() -> Unit)? = null,
+    dense: Boolean = false,
 ) {
     if (LocalSettingsGroup.current) {
         SettingLink(title, subtitle, icon, onClick, trailing)
@@ -341,9 +342,9 @@ fun InfoCard(
         radius = 18.dp,
     ) {
         Row(
-            Modifier.padding(16.dp),
+            Modifier.padding(if (dense) 10.dp else 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            horizontalArrangement = Arrangement.spacedBy(if (dense) 10.dp else 14.dp),
         ) {
             Box(Modifier.size(24.dp)) { icon() }
             Column(Modifier.weight(1f)) {
@@ -357,7 +358,7 @@ fun InfoCard(
                         subtitle,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 4.dp),
+                        modifier = Modifier.padding(top = if (dense) 2.dp else 4.dp),
                     )
             }
             if (trailing != null) trailing() else Icon(Icons.Outlined.ChevronRight, null)
